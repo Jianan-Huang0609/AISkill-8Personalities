@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { personalityDetails } from '../data/personalityDetails';
 import { identityWeights } from '../data/questions';
 import './AllPersonalityTypes.css';
@@ -5,6 +6,19 @@ import './AllPersonalityTypes.css';
 export default function AllPersonalityTypes() {
   const allTypes = Object.values(personalityDetails);
   const identityNames = Object.keys(identityWeights) as Array<keyof typeof identityWeights>;
+  const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
+
+  const handleCardClick = (code: string) => {
+    setFlippedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(code)) {
+        newSet.delete(code);
+      } else {
+        newSet.add(code);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <div className="all-personality-types">
@@ -14,42 +28,77 @@ export default function AllPersonalityTypes() {
       </div>
 
       <div className="types-grid">
-        {allTypes.map((type) => (
-          <div key={type.code} className="type-card">
-            <div className="type-header">
-              <h2>{type.name}</h2>
-              <span className="type-code">{type.code}</span>
+        {allTypes.map((type) => {
+          const isFlipped = flippedCards.has(type.code);
+          return (
+            <div 
+              key={type.code} 
+              className={`type-card-wrapper ${isFlipped ? 'flipped' : ''}`}
+              onClick={() => handleCardClick(type.code)}
+            >
+              <div className="type-card-inner">
+                {/* 正面：内容 */}
+                <div className="type-card-front">
+                  <div className="type-header">
+                    <h2>{type.name}</h2>
+                    <span className="type-code">{type.code}</span>
+                  </div>
+                  <div className="type-content">
+                    <p className="type-description">{type.description}</p>
+                    {type.metaphor && (
+                      <div className="type-metaphor">
+                        <strong>形象比喻：</strong>{type.metaphor}
+                      </div>
+                    )}
+                    {type.coreTraits && type.coreTraits.length > 0 && (
+                      <div className="type-traits">
+                        <strong>核心特质：</strong>
+                        <ul>
+                          {type.coreTraits.map((trait, i) => (
+                            <li key={i}>{trait}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {type.strengths && type.strengths.length > 0 && (
+                      <div className="type-strengths">
+                        <strong>优势：</strong>
+                        <ul>
+                          {type.strengths.slice(0, 3).map((strength, i) => (
+                            <li key={i}>{strength}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flip-hint">点击卡片查看猫猫形象 🐱</div>
+                </div>
+                {/* 背面：猫猫图片 */}
+                <div className="type-card-back">
+                  <div className="cat-image-back-container">
+                    <img 
+                      src={`/8Cats/${type.code.replace(/-/g, '')}.png`} 
+                      alt={type.name}
+                      className="cat-image-back"
+                      onError={(e) => {
+                        const imagePath = `/8Cats/${type.code.replace(/-/g, '')}.png`;
+                        console.error('图片加载失败:', imagePath, '原始code:', type.code);
+                        const container = (e.target as HTMLImageElement).parentElement;
+                        if (container) {
+                          container.innerHTML = `<div style="text-align: center; color: var(--text-gray); padding: 2rem;">图片加载失败<br/>${type.code.replace(/-/g, '')}.png</div>`;
+                        }
+                      }}
+                      onLoad={() => {
+                        console.log('图片加载成功:', `/8Cats/${type.code.replace(/-/g, '')}.png`);
+                      }}
+                    />
+                  </div>
+                  <div className="flip-hint">点击卡片返回</div>
+                </div>
+              </div>
             </div>
-            <div className="type-content">
-              <p className="type-description">{type.description}</p>
-              {type.metaphor && (
-                <div className="type-metaphor">
-                  <strong>形象比喻：</strong>{type.metaphor}
-                </div>
-              )}
-              {type.coreTraits && type.coreTraits.length > 0 && (
-                <div className="type-traits">
-                  <strong>核心特质：</strong>
-                  <ul>
-                    {type.coreTraits.map((trait, i) => (
-                      <li key={i}>{trait}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {type.strengths && type.strengths.length > 0 && (
-                <div className="type-strengths">
-                  <strong>优势：</strong>
-                  <ul>
-                    {type.strengths.slice(0, 3).map((strength, i) => (
-                      <li key={i}>{strength}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="calculation-theory">

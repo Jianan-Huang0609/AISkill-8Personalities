@@ -207,6 +207,23 @@
   font-weight: 700;
 }
 
+.personality-image-container {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--light-gray);
+  border-radius: 16px;
+  border: 2px solid var(--christmas-green);
+}
+
+.personality-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .metaphor-section {
   margin-bottom: 2rem;
   padding: 1.5rem;

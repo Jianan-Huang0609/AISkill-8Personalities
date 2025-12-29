@@ -23,27 +23,33 @@ export default function RadarChart({ scores }: RadarChartProps) {
     const dataItem = data.find(d => d.dimension === payload.value);
     const score = dataItem?.score || 0;
     
+    // 计算标签位置，确保不重叠
+    const radius = Math.sqrt(x * x + y * y);
+    const scale = radius > 0 ? (radius + 25) / radius : 1;
+    const labelX = x * scale;
+    const labelY = y * scale;
+    
     return (
       <g>
         <text
-          x={x}
-          y={y}
+          x={labelX}
+          y={labelY}
           fill="#2C2C2C"
-          fontSize={13}
+          fontSize={11}
           fontWeight={600}
           textAnchor="middle"
-          dy={-10}
+          dy={-8}
         >
           {payload.value}
         </text>
         <text
-          x={x}
-          y={y}
+          x={labelX}
+          y={labelY}
           fill="#C8102E"
-          fontSize={18}
+          fontSize={14}
           fontWeight={700}
           textAnchor="middle"
-          dy={8}
+          dy={6}
         >
           {score.toFixed(1)}
         </text>
@@ -54,17 +60,23 @@ export default function RadarChart({ scores }: RadarChartProps) {
   return (
     <div className="radar-chart-container">
       <ResponsiveContainer width="100%" height="100%">
-        <RechartsRadarChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+        <RechartsRadarChart 
+          data={data} 
+          margin={{ top: 30, right: 30, bottom: 30, left: 30 }}
+          outerRadius="75%"
+        >
           <PolarGrid stroke="#E0E0E0" />
           <PolarAngleAxis 
             dataKey="dimension" 
             tick={renderCustomLabel}
+            tickLine={false}
           />
           <PolarRadiusAxis 
             angle={90} 
             domain={[0, 10]}
-            tick={{ fill: 'rgba(0, 0, 0, 0.3)', fontSize: 10 }}
+            tick={{ fill: 'rgba(0, 0, 0, 0.3)', fontSize: 9 }}
             tickCount={6}
+            axisLine={false}
           />
           <Radar
             name="得分"

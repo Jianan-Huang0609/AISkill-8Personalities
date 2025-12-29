@@ -111,26 +111,54 @@ export const questions: Question[] = [
     id: 'Q1.1',
     part: 'PART 1',
     dimension: '理论洞察力',
-    title: '以下概念中，你能向技术团队讲清"为什么这样设计比那样更好"的有：',
+    title: '以下系统级概念中，你能向技术团队讲清"为什么这样设计比那样更好，以及核心陷阱是什么"的有：',
     type: 'multiple',
     options: [
-      { value: 'attention', label: 'Attention演进：从缩放点积到多头、多查询注意力的设计考量' },
-      { value: 'architecture', label: '架构选择：纯Decoder vs Encoder-Decoder vs 混合架构在2025年的实际取舍' },
-      { value: 'alignment', label: '对齐技术：RLHF到DPO/KTO的演进，以及"过度优化"问题' },
-      { value: 'rag', label: 'RAG深水区：检索-生成不一致、上下文窗口浪费等核心挑战' },
-      { value: 'lora', label: '高效微调：LoRA及其变种的效率来源与理论边界' },
-      { value: 'generation', label: '生成范式：自回归、扩散模型、流匹配的根本差异' },
-      { value: 'moe', label: 'MoE实践：专家负载均衡、路由策略的工程实现考量' },
-      { value: 'compute', label: '推理计算：为什么测试时计算（Test-Time Compute）成为关键' },
+      // 一类：工程化与系统能力
+      { value: 'agent_architecture', label: '智能体架构选择：单Agent vs. 多子Agent/分工协作 vs. 分层控制器的延迟、成本与可靠性权衡' },
+      { value: 'skill_framework', label: '技能与工具框架：GPTs/自定义动作 vs. Claude工具 vs. Model Context Protocol（MCP）等开源协议的设计考量' },
+      { value: 'state_memory', label: '状态与记忆工程：向量数据库 vs. 传统数据库/图结构的选择，以及"记忆幻觉"与"记忆淹没"的解决方案' },
+      { value: 'async_workflow', label: '流式与异步处理：Agent工作流的异步、事件驱动设计，以及同步调用的"链式延迟"和"失败回滚"问题规避' },
+      // 二类：基础建设与可观测性
+      { value: 'evaluation', label: '评估与基准测试：传统学术基准的局限性，过程监督评分与端到端任务成功率的设计方法' },
+      { value: 'observability', label: '可观测性与调试：复杂轨迹（Trace）的结构化日志和追踪系统，快速定位工具错误、提示词问题或模型逻辑错误' },
+      { value: 'cost_governance', label: '成本与资源治理：多租户Agent平台的细粒度成本分摊（Token/请求级别）和算力配额管理' },
+      // 三类：性能与优化深水区
+      { value: 'inference_optimization', label: '推理优化新范式：推测解码和级联推理在Agent场景下的总体吞吐 vs. 单次延迟权衡' },
+      { value: 'context_window', label: '上下文窗口的陷阱：百万级上下文时的性能下降问题，RAG与长上下文的选择，"注意力稀释"的解决方案' },
+      { value: 'fine_tuning_strategy', label: '模型微调策略：全量微调 vs. 适配器微调 vs. 纯提示工程的成本收益曲线交叉点' },
+      // 四类：前后处理与数据流
+      { value: 'input_gateway', label: '输入规范化与路由：输入网关的意图识别、敏感信息过滤，以及路由到不同技能或Agent流水线的设计' },
+      { value: 'output_postprocess', label: '输出后处理与规范化：确保LLM/Agent输出的结构化数据（如JSON）100%合规，强类型校验与自动修复的后处理层' },
+      { value: 'continuous_learning', label: '持续学习与数据飞轮：从生产环境的Agent失败案例中自动构建高质量的调试与微调数据，形成闭环' },
     ],
     scoring: (answer: string[]) => {
       const count = answer.length;
-      const hasTradeoff = answer.some(a => ['architecture', 'rag', 'moe'].includes(a));
-      if (count >= 6 && hasTradeoff) return 9.5;
-      if (count >= 6) return 9;
-      if (count >= 4) return 7.5;
-      if (count >= 2) return 5.5;
-      return 3.5;
+      
+      // 定义四个类别
+      const category1 = ['agent_architecture', 'skill_framework', 'state_memory', 'async_workflow']; // 工程化与系统能力
+      const category2 = ['evaluation', 'observability', 'cost_governance']; // 基础建设与可观测性
+      const category3 = ['inference_optimization', 'context_window', 'fine_tuning_strategy']; // 性能与优化深水区
+      const category4 = ['input_gateway', 'output_postprocess', 'continuous_learning']; // 前后处理与数据流
+      
+      // 计算覆盖的类别数
+      const coveredCategories = new Set<number>();
+      answer.forEach(a => {
+        if (category1.includes(a)) coveredCategories.add(1);
+        if (category2.includes(a)) coveredCategories.add(2);
+        if (category3.includes(a)) coveredCategories.add(3);
+        if (category4.includes(a)) coveredCategories.add(4);
+      });
+      const categoryCount = coveredCategories.size;
+      
+      // 根据新评分标准
+      if (count >= 8 && categoryCount >= 3) return 9.5; // 8+项且覆盖3+类别：9-10分
+      if (count >= 8) return 9;
+      if (count >= 6 && categoryCount >= 2) return 7.5; // 6-7项且覆盖2+类别：7-8分
+      if (count >= 6) return 7;
+      if (count >= 4) return 5.5; // 4-5项：5-6分
+      if (count >= 2) return 3.5; // 2-3项：3-4分
+      return 1.5; // 0-1项：1-2分
     },
     required: true,
   },

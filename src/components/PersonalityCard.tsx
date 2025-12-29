@@ -207,6 +207,23 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
         <div className="bias-info">
           <p>认知偏差：<strong>{bias}</strong></p>
         </div>
+
+        {/* 人格类型图片 */}
+        <div className="personality-image-container">
+          <img 
+            src={`/8Cats/${actualType.code.replace(/-/g, '')}.png`} 
+            alt={actualType.name}
+            className="personality-image"
+            onError={(e) => {
+              const imagePath = `/8Cats/${actualType.code.replace(/-/g, '')}.png`;
+              console.error('PersonalityCard 图片加载失败:', imagePath, '原始code:', actualType.code);
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+            onLoad={() => {
+              console.log('PersonalityCard 图片加载成功:', `/8Cats/${actualType.code.replace(/-/g, '')}.png`);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

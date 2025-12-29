@@ -88,6 +88,9 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   md += `**人格描述**: ${actualType.description}\n\n`;
   md += `**预设身份**: ${identity}\n`;
   md += `**认知偏差**: ${bias}\n\n`;
+  
+  // 添加人格类型图片（Markdown格式）
+  md += `![${actualType.name}](/8Cats/${actualType.code.replace(/-/g, '')}.png)\n\n`;
 
   // 三、维度得分分析
   md += `## 三、维度得分分析\n\n`;
@@ -227,9 +230,14 @@ export function generateMarkdownReport(result: AssessmentResult): string {
         if (answer) {
           md += `**${question.title}**\n\n`;
           const formattedAnswer = formatAnswer(question, answer);
-          md += `> ${formattedAnswer}\n\n`;
+          // 如果答案有文本说明，优先显示文本，让报告更个性化
           if (answer.text && answer.text.trim()) {
-            md += `*补充说明*: ${answer.text}\n\n`;
+            md += `> ${answer.text}\n\n`;
+            if (formattedAnswer && formattedAnswer !== answer.text) {
+              md += `*选项答案*: ${formattedAnswer}\n\n`;
+            }
+          } else {
+            md += `> ${formattedAnswer}\n\n`;
           }
         }
       });
@@ -422,6 +430,13 @@ export async function generatePDFReport(result: AssessmentResult) {
   addText(`预设身份: ${identity}`, 11);
   addText(`认知偏差: ${bias}`, 11);
   yPos += 5;
+  
+  // 添加人格类型图片（PDF中显示图片路径提示）
+  checkPage(30);
+  doc.setFontSize(10);
+  doc.setTextColor(100, 100, 100);
+  doc.text(`人格类型图片: /8Cats/${actualType.code.replace(/-/g, '')}.png`, margin, yPos);
+  yPos += 8;
 
   // 三、维度得分分析
   checkPage(50);
@@ -664,10 +679,14 @@ export async function generatePDFReport(result: AssessmentResult) {
           yPos += 3;
 
           const formattedAnswer = formatAnswer(question, answer);
-          addText(`答案: ${formattedAnswer}`, 10, [50, 50, 50]);
-          
+          // 如果答案有文本说明，优先显示文本，让报告更个性化
           if (answer.text && answer.text.trim()) {
-            addText(`补充说明: ${answer.text}`, 10, [100, 100, 100]);
+            addText(`答案: ${answer.text}`, 10, [50, 50, 50]);
+            if (formattedAnswer && formattedAnswer !== answer.text) {
+              addText(`选项: ${formattedAnswer}`, 10, [100, 100, 100]);
+            }
+          } else {
+            addText(`答案: ${formattedAnswer}`, 10, [50, 50, 50]);
           }
           yPos += 5;
         }

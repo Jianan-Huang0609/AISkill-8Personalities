@@ -92,6 +92,32 @@ export default function ResultView({ result }: ResultViewProps) {
           <div className="scores-section">
             <h2>维度得分</h2>
             <RadarChart scores={result.scores} />
+            <div className="dimension-details">
+              {Object.entries(result.scores).map(([key, score]) => {
+                const dimensionNames: Record<string, string> = {
+                  theory: '理论洞察力',
+                  engineering: '工程实现力',
+                  learning: '学习敏捷度',
+                  collaboration: 'AI协作力',
+                  radar: '信息雷达',
+                  innovation: '创新突破力',
+                  influence: '影响力声量',
+                  aesthetics: '表达审美力',
+                };
+                return (
+                  <div key={key} className="dimension-item">
+                    <span className="dimension-name">{dimensionNames[key] || key}</span>
+                    <div className="score-bar">
+                      <div 
+                        className="score-fill" 
+                        style={{ width: `${(score / 10) * 100}%` }}
+                      />
+                    </div>
+                    <span className="score-value">{score.toFixed(1)}/10</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
           {result.badges.length > 0 && (
             <div className="badges-section">

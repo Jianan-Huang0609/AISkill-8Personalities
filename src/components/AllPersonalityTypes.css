@@ -29,18 +29,97 @@
   margin-bottom: 4rem;
 }
 
-.type-card {
+.type-card-wrapper {
+  perspective: 1000px;
+  height: 100%;
+  min-height: 450px;
+}
+
+.type-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.type-card-wrapper.flipped .type-card-inner {
+  transform: rotateY(180deg);
+}
+
+.type-card-front,
+.type-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: var(--snow-white);
   border: 2px solid var(--christmas-red);
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(200, 16, 46, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.type-card:hover {
-  transform: translateY(-4px);
+.type-card-back {
+  transform: rotateY(180deg);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.type-card-back .flip-hint {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+}
+
+.type-card-wrapper:hover .type-card-front {
   box-shadow: 0 8px 24px rgba(200, 16, 46, 0.2);
+}
+
+.flip-hint {
+  margin-top: auto;
+  text-align: center;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  font-style: italic;
+}
+
+.cat-image-back-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 3rem);
+  min-height: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.cat-image-back {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 0 auto;
 }
 
 .type-header {
@@ -71,59 +150,86 @@
   letter-spacing: 0.2em;
 }
 
-.type-content {
+.type-card-front .type-content {
   color: var(--text-dark);
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  padding-right: 0.5rem;
 }
 
-.type-description {
+/* 滚动条样式 */
+.type-card-front .type-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.type-card-front .type-content::-webkit-scrollbar-track {
+  background: var(--light-gray);
+  border-radius: 3px;
+}
+
+.type-card-front .type-content::-webkit-scrollbar-thumb {
+  background: var(--christmas-red);
+  border-radius: 3px;
+}
+
+.type-card-front .type-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 16, 46, 0.8);
+}
+
+.type-card-front .type-description {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 1rem;
   font-weight: 500;
+  word-wrap: break-word;
 }
 
-.type-metaphor {
+.type-card-front .type-metaphor {
   margin-bottom: 1rem;
   padding: 0.75rem;
   background: rgba(212, 175, 55, 0.1);
   border-radius: 8px;
   border-left: 3px solid var(--christmas-gold);
   font-size: 1rem;
+  word-wrap: break-word;
 }
 
-.type-traits,
-.type-strengths {
+.type-card-front .type-traits,
+.type-card-front .type-strengths {
   margin-top: 1rem;
 }
 
-.type-traits strong,
-.type-strengths strong {
+.type-card-front .type-traits strong,
+.type-card-front .type-strengths strong {
   color: var(--christmas-red);
   font-size: 1rem;
   display: block;
   margin-bottom: 0.5rem;
 }
 
-.type-traits ul,
-.type-strengths ul {
+.type-card-front .type-traits ul,
+.type-card-front .type-strengths ul {
   list-style: none;
   padding: 0;
   margin: 0;
   padding-left: 1.5rem;
 }
 
-.type-traits li,
-.type-strengths li {
+.type-card-front .type-traits li,
+.type-card-front .type-strengths li {
   padding: 0.4rem 0;
   color: var(--text-dark);
   font-size: 0.95rem;
   line-height: 1.6;
   position: relative;
   padding-left: 1.5rem;
+  word-wrap: break-word;
 }
 
-.type-traits li::before,
-.type-strengths li::before {
+.type-card-front .type-traits li::before,
+.type-card-front .type-strengths li::before {
   content: '•';
   position: absolute;
   left: 0;
@@ -132,6 +238,7 @@
   font-weight: 700;
   line-height: 1.4;
 }
+
 
 .calculation-theory {
   background: var(--snow-white);
