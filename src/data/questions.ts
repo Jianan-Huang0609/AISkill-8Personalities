@@ -111,35 +111,30 @@ export const questions: Question[] = [
     id: 'Q1.1',
     part: 'PART 1',
     dimension: '理论洞察力',
-    title: '以下系统级概念中，你能向技术团队讲清"为什么这样设计比那样更好，以及核心陷阱是什么"的有：',
+    title: '在构建生产级AI系统时，设计决策常面临多路径的取舍。对于以下决策场景，您是否能够基于理论框架或实践经验，做出明确的判断并说明取舍依据？（可多选）',
     type: 'multiple',
     options: [
-      // 一类：工程化与系统能力
-      { value: 'agent_architecture', label: '智能体架构选择：单Agent vs. 多子Agent/分工协作 vs. 分层控制器的延迟、成本与可靠性权衡' },
-      { value: 'skill_framework', label: '技能与工具框架：GPTs/自定义动作 vs. Claude工具 vs. Model Context Protocol（MCP）等开源协议的设计考量' },
-      { value: 'state_memory', label: '状态与记忆工程：向量数据库 vs. 传统数据库/图结构的选择，以及"记忆幻觉"与"记忆淹没"的解决方案' },
-      { value: 'async_workflow', label: '流式与异步处理：Agent工作流的异步、事件驱动设计，以及同步调用的"链式延迟"和"失败回滚"问题规避' },
-      // 二类：基础建设与可观测性
-      { value: 'evaluation', label: '评估与基准测试：传统学术基准的局限性，过程监督评分与端到端任务成功率的设计方法' },
-      { value: 'observability', label: '可观测性与调试：复杂轨迹（Trace）的结构化日志和追踪系统，快速定位工具错误、提示词问题或模型逻辑错误' },
-      { value: 'cost_governance', label: '成本与资源治理：多租户Agent平台的细粒度成本分摊（Token/请求级别）和算力配额管理' },
-      // 三类：性能与优化深水区
-      { value: 'inference_optimization', label: '推理优化新范式：推测解码和级联推理在Agent场景下的总体吞吐 vs. 单次延迟权衡' },
-      { value: 'context_window', label: '上下文窗口的陷阱：百万级上下文时的性能下降问题，RAG与长上下文的选择，"注意力稀释"的解决方案' },
-      { value: 'fine_tuning_strategy', label: '模型微调策略：全量微调 vs. 适配器微调 vs. 纯提示工程的成本收益曲线交叉点' },
-      // 四类：前后处理与数据流
-      { value: 'input_gateway', label: '输入规范化与路由：输入网关的意图识别、敏感信息过滤，以及路由到不同技能或Agent流水线的设计' },
-      { value: 'output_postprocess', label: '输出后处理与规范化：确保LLM/Agent输出的结构化数据（如JSON）100%合规，强类型校验与自动修复的后处理层' },
-      { value: 'continuous_learning', label: '持续学习与数据飞轮：从生产环境的Agent失败案例中自动构建高质量的调试与微调数据，形成闭环' },
+      // 一类：架构与系统设计（2个）
+      { value: 'agent_architecture', label: '智能体架构：当任务复杂度增加时，是采用简单但易瓶颈的单智能体，还是转向高效但协调复杂的多智能体协作？' },
+      { value: 'async_workflow', label: '流程设计：为保证流程可预测，应采用直观但慢速的同步链式调用，还是实施高效但调试复杂的异步事件驱动？' },
+      // 二类：技术选型与数据（2个）
+      { value: 'memory_system', label: '记忆系统：为存储和召回知识，应依赖灵活但可能出错的向量检索，还是采用精确但设计复杂的结构化图数据库？' },
+      { value: 'context_management', label: '上下文管理：为处理长文本信息，应利用方便但低效的超长上下文窗口，还是构建精准但复杂的RAG检索系统？' },
+      // 三类：性能与优化（2个）
+      { value: 'inference_optimization', label: '推理优化：为提升服务体验，应优化至关重要的单次请求延迟，还是追求影响总体的资源吞吐与成本效率？' },
+      { value: 'fine_tuning_strategy', label: '模型定制：为提升模型效果，应持续投入快速试错的提示工程，还是启动效果显著但周期长的专项微调？' },
+      // 四类：工程实践与保障（2个）
+      { value: 'evaluation_standard', label: '评估标准：为衡量系统表现，应优化可比性强但脱离业务的传统基准，还是直接提升真实但难量化的端到端任务成功率？' },
+      { value: 'output_guarantee', label: '输出保障：为确保下游稳定，应完全信任并直接使用模型原始输出，还是增加可靠但引入延迟的强校验后处理层？' },
     ],
     scoring: (answer: string[]) => {
       const count = answer.length;
       
       // 定义四个类别
-      const category1 = ['agent_architecture', 'skill_framework', 'state_memory', 'async_workflow']; // 工程化与系统能力
-      const category2 = ['evaluation', 'observability', 'cost_governance']; // 基础建设与可观测性
-      const category3 = ['inference_optimization', 'context_window', 'fine_tuning_strategy']; // 性能与优化深水区
-      const category4 = ['input_gateway', 'output_postprocess', 'continuous_learning']; // 前后处理与数据流
+      const category1 = ['agent_architecture', 'async_workflow']; // 架构与系统设计
+      const category2 = ['memory_system', 'context_management']; // 技术选型与数据
+      const category3 = ['inference_optimization', 'fine_tuning_strategy']; // 性能与优化
+      const category4 = ['evaluation_standard', 'output_guarantee']; // 工程实践与保障
       
       // 计算覆盖的类别数
       const coveredCategories = new Set<number>();
@@ -151,13 +146,13 @@ export const questions: Question[] = [
       });
       const categoryCount = coveredCategories.size;
       
-      // 根据新评分标准
-      if (count >= 8 && categoryCount >= 3) return 9.5; // 8+项且覆盖3+类别：9-10分
-      if (count >= 8) return 9;
-      if (count >= 6 && categoryCount >= 2) return 7.5; // 6-7项且覆盖2+类别：7-8分
-      if (count >= 6) return 7;
-      if (count >= 4) return 5.5; // 4-5项：5-6分
-      if (count >= 2) return 3.5; // 2-3项：3-4分
+      // 评分标准：同时考虑选择数量和类别覆盖度
+      if (count >= 7 && categoryCount >= 3) return 9.5; // 7-8项且覆盖3+类别：9-10分
+      if (count >= 7) return 9;
+      if (count >= 5 && categoryCount >= 2) return 7.5; // 5-6项且覆盖2+类别：7-8分
+      if (count >= 5) return 7;
+      if (count >= 3) return 5.5; // 3-4项：5-6分
+      if (count >= 2) return 3.5; // 2项：3-4分
       return 1.5; // 0-1项：1-2分
     },
     required: true,
@@ -475,25 +470,28 @@ export const questions: Question[] = [
     id: 'Q5.2',
     part: 'PART 2',
     dimension: '信息雷达',
-    title: '回顾2024年底，你对2025年哪些趋势有明确预判？',
+    title: '回顾2025年，您认为以下哪些技术或领域取得了关键进展或已成为明确趋势？（可多选）',
     type: 'multiple',
     options: [
-      { value: 'reasoning', label: '推理模型（如o1/o3系列）成为焦点' },
-      { value: 'open', label: '开源模型在实用层面逼近闭源' },
-      { value: 'agent', label: '智能体成为主流应用形态' },
-      { value: 'video', label: '视频生成质量取得突破' },
-      { value: 'coding', label: 'AI编程工具大规模普及' },
-      { value: 'embodied', label: '具身智能有实质性进展' },
-      { value: 'neuro', label: '神经符号融合出现标志性工作' },
-      { value: 'science', label: 'AI for Science规模化落地' },
-      { value: 'light', label: '轻量模型+重型推理架构流行' },
+      { value: 'hardware_cost', label: '硬件成本重构：专用芯片（如TPU）竞争推动推理架构创新，核心目标从追求算力峰值转向降低实际部署与使用成本。' },
+      { value: 'alignment_paradigm', label: '对齐范式革新：业界认识到RLHF等方法在消除模型深层偏见上存在局限，探索更可靠的新对齐技术已成为紧迫课题。' },
+      { value: 'cognitive_trust', label: '认知与可信研究：对人脑与AI思维机制差异的探索，正驱动产业界提升对AI决策过程可解释性与可信赖性的要求。' },
+      { value: 'model_squeeze', label: '模型挤压应用：大模型性能持续提升，一方面向上夯实技术基础，另一方面向下渗透垂直行业，压缩了中间层简单工具的空间。' },
+      { value: 'vertical_landing', label: '垂直化落地深入：通用模型转向行业定制已成共识，但落地过程仍普遍面临高质量数据获取、部署成本与场景泛化能力的挑战。' },
+      { value: 'agent_popularization', label: '智能体(Agent)普及：智能体成为将大模型能力转化为实际工作流的主流形态，但其开发效率、运行稳定性与合规门槛仍需优化。' },
+      { value: 'video_generation', label: '视频生成突破与规制：文生视频质量取得跨越式进步，促使创作门槛降低，同时也引发了关于内容真实性、版权归属与伦理风险的全球性监管讨论。' },
+      { value: 'ai_science', label: 'AI for Science规模化：人工智能在生物制药、新材料发现等科研领域实现了从实验工具到规模化生产力的转变，推动研发范式变革。' },
+      { value: 'neuro_symbolic', label: '神经符号融合兴起：结合神经网络感知与符号系统推理的融合技术，被视为提升AI逻辑严谨性与决策可解释性的关键前沿方向。' },
+      { value: 'open_source', label: '开源生态繁荣：优秀开源模型在多项实用指标上逼近闭源模型，同时以其灵活性构建了繁荣的开发者生态，为企业提供了重要技术选项。' },
     ],
     scoring: (answer: string[]) => {
       const count = answer.length;
-      if (count >= 5) return 9.5;
-      if (count >= 3) return 7.5;
-      if (count >= 1) return 5.5;
-      return 4;
+      // 10个选项的评分标准
+      if (count >= 8) return 9.5; // 8-10项：9-10分
+      if (count >= 6) return 7.5; // 6-7项：7-8分
+      if (count >= 4) return 5.5; // 4-5项：5-6分
+      if (count >= 2) return 3.5; // 2-3项：3-4分
+      return 1.5; // 0-1项：1-2分
     },
     required: true,
   },
