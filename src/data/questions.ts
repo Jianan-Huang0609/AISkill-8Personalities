@@ -623,7 +623,7 @@ export const questions: Question[] = [
       { value: 'D', label: 'D. 高效实用：如VSCode、终端，信息密度为王' },
       { value: 'E', label: 'E. 炫酷科技：强视觉冲击的未来感设计' },
     ],
-    scoring: (answer: string, _text?: string) => {
+    scoring: (_answer: string, _text?: string) => {
       if (_text && _text.length > 30) return 9.5;
       if (_text && _text.length > 10) return 8.5;
       return 6.5;

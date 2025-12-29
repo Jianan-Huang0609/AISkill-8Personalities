@@ -1,27 +1,13 @@
 import { useQuestionnaireStore } from './store/questionnaireStore';
 import Questionnaire from './components/Questionnaire';
 import ResultView from './components/ResultView';
-import { questions } from './data/questions';
 import './App.css';
 
 function App() {
   const { 
     currentStep, 
-    answers, 
-    identity, 
     result
   } = useQuestionnaireStore();
-
-  // 检查是否完成问卷
-  const regularQuestions = questions.filter(q => q.part !== 'PART 0');
-  const totalSteps = regularQuestions.length + 1;
-  
-  // 检查是否所有必需问题都已回答
-  const requiredQuestions = regularQuestions.filter(q => q.required);
-  const answeredQuestionIds = new Set(answers.map(a => a.questionId));
-  const allRequiredAnswered = requiredQuestions.every(q => answeredQuestionIds.has(q.id));
-  
-  // const isComplete = currentStep >= totalSteps && identity && allRequiredAnswered;
 
   if (result) {
     return <ResultView result={result} />;
