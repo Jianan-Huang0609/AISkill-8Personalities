@@ -5,6 +5,7 @@
   "description": "2025年AI技能树评测问卷系统",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm install --include=optional --no-save || true",
     "build": "tsc && vite build",
     "build:ci": "npm install --include=optional --no-save && npm run build",
     "preview": "vite preview",
