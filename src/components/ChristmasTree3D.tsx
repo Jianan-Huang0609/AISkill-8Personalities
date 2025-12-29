@@ -48,12 +48,11 @@ export default function ChristmasTree3D({ result }: { result: AssessmentResult }
 }
 
 function TreeModel({ result }: { result: AssessmentResult }) {
-  const { scores, badges } = result;
+  const { scores } = result;
   
   // 计算树形参数
   const height = (scores.engineering + scores.theory) / 2 + 3;
   const width = (scores.innovation + scores.aesthetics) / 2 + 2;
-  const particleCount = Math.floor(scores.learning * 150 + scores.radar * 50);
 
   return (
     <group>
@@ -64,7 +63,7 @@ function TreeModel({ result }: { result: AssessmentResult }) {
       </mesh>
 
       {/* 树层 */}
-      {[0, 1, 2, 3].map((layer, i) => {
+      {[0, 1, 2, 3].map((_, i) => {
         const layerHeight = height * 0.2 + i * height * 0.15;
         const layerWidth = width * (1 - i * 0.2);
         

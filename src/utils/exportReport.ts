@@ -148,7 +148,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
 
   md += `### 💡 2026年成长处方\n\n`;
   if (actualType.detailedAdvice && actualType.detailedAdvice.length > 0) {
-    actualType.detailedAdvice.forEach((adviceGroup, i) => {
+    actualType.detailedAdvice.forEach((adviceGroup) => {
       md += `#### ${adviceGroup.title}\n\n`;
       adviceGroup.items.forEach((item, j) => {
         md += `${j + 1}. ${item}\n`;
@@ -164,7 +164,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
 
   if (actualType.partners && actualType.partners.length > 0) {
     md += `### 🤝 互补伙伴\n\n`;
-    actualType.partners.forEach((partner, i) => {
+    actualType.partners.forEach((partner) => {
       md += `**${partner.type}**\n`;
       md += `- 如何互补：${partner.how}\n`;
       if (partner.note) {
@@ -353,9 +353,9 @@ export async function generatePDFReport(result: AssessmentResult) {
   const addText = (text: string, fontSize: number = 11, color: number[] = [0, 0, 0], isBold: boolean = false) => {
     doc.setFontSize(fontSize);
     if (isBold) {
-      doc.setFont(undefined, 'bold');
+      doc.setFont('helvetica', 'bold');
     } else {
-      doc.setFont(undefined, 'normal');
+      doc.setFont('helvetica', 'normal');
     }
     doc.setTextColor(color[0], color[1], color[2]);
     const lines = doc.splitTextToSize(text, pageWidth - 2 * margin);
@@ -365,7 +365,7 @@ export async function generatePDFReport(result: AssessmentResult) {
       yPos += lineHeight;
     });
     if (isBold) {
-      doc.setFont(undefined, 'normal');
+      doc.setFont('helvetica', 'normal');
     }
   };
 
@@ -404,7 +404,7 @@ export async function generatePDFReport(result: AssessmentResult) {
 
   doc.setFontSize(14);
   doc.setTextColor(0, 0, 0);
-  doc.setFont(undefined, 'bold');
+  doc.setFont('helvetica', 'bold');
   addText(`你的AI人格代码：${actualType.code}`, 14, [0, 0, 0], true);
   yPos += 5;
 
@@ -531,9 +531,9 @@ export async function generatePDFReport(result: AssessmentResult) {
   if (actualType.detailedAdvice && actualType.detailedAdvice.length > 0) {
     actualType.detailedAdvice.forEach((adviceGroup) => {
       checkPage(30);
-      doc.setFont(undefined, 'bold');
+      doc.setFont('helvetica', 'bold');
       addText(adviceGroup.title, 11, [0, 0, 0], true);
-      doc.setFont(undefined, 'normal');
+      doc.setFont('helvetica', 'normal');
       adviceGroup.items.forEach((item) => {
         checkPage();
         addText(`  • ${item}`, 11);
@@ -556,9 +556,9 @@ export async function generatePDFReport(result: AssessmentResult) {
     doc.setFontSize(11);
     actualType.partners.forEach((partner) => {
       checkPage(25);
-      doc.setFont(undefined, 'bold');
+      doc.setFont('helvetica', 'bold');
       addText(partner.type, 11, [0, 0, 0], true);
-      doc.setFont(undefined, 'normal');
+      doc.setFont('helvetica', 'normal');
       addText(`  如何互补: ${partner.how}`, 10);
       if (partner.note) {
         addText(`  注意事项: ${partner.note}`, 10);
@@ -648,9 +648,9 @@ export async function generatePDFReport(result: AssessmentResult) {
       checkPage(40);
       doc.setFontSize(14);
       doc.setTextColor(0, 0, 0);
-      doc.setFont(undefined, 'bold');
+      doc.setFont('helvetica', 'bold');
       doc.text(part, margin, yPos);
-      doc.setFont(undefined, 'normal');
+      doc.setFont('helvetica', 'normal');
       yPos += 10;
 
       partQuestions.forEach(question => {
@@ -658,9 +658,9 @@ export async function generatePDFReport(result: AssessmentResult) {
         if (answer) {
           checkPage(30);
           doc.setFontSize(11);
-          doc.setFont(undefined, 'bold');
+          doc.setFont('helvetica', 'bold');
           addText(question.title, 11, [0, 0, 0], true);
-          doc.setFont(undefined, 'normal');
+          doc.setFont('helvetica', 'normal');
           yPos += 3;
 
           const formattedAnswer = formatAnswer(question, answer);

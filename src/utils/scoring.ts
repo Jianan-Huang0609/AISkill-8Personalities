@@ -1,11 +1,10 @@
 import { Answer, DimensionScores, Identity, PersonalityType, AssessmentResult } from '../types/questionnaire';
-import { questions, identityWeights } from '../data/questions';
+import { questions } from '../data/questions';
 import { personalityDetails } from '../data/personalityDetails';
 
 // 计算各维度得分
 export function calculateDimensionScores(
-  answers: Answer[],
-  identity: Identity
+  answers: Answer[]
 ): DimensionScores {
   const scores: DimensionScores = {
     theory: 0,
@@ -39,7 +38,11 @@ export function calculateDimensionScores(
       const answer = answers.find(a => a.questionId === qId);
       
       if (question && answer) {
-        const score = question.scoring(answer.value, answer.text);
+        // 根据 scoring 函数的签名调用
+        // 注意：虽然类型定义是 (answer: any) => number，但实际实现可能接受两个参数
+        // 使用类型断言来调用
+        const scoringFn = question.scoring as (answer: any, text?: string) => number;
+        const score = scoringFn(answer.value, answer.text);
         if (score > 0) {
           dimensionScores.push(score);
         }
@@ -79,10 +82,10 @@ export function calculatePersonalityType(scores: DimensionScores): PersonalityTy
     (isIndependent ? 'I' : 'O');
 
   // 获取人格类型详情
-  return getPersonalityTypeDetails(typeCode, scores);
+  return getPersonalityTypeDetails(typeCode);
 }
 
-function getPersonalityTypeDetails(code: string, scores: DimensionScores): PersonalityType {
+function getPersonalityTypeDetails(code: string): PersonalityType {
   const detailed = personalityDetails[code];
   console.log('查找人格类型:', code, '找到:', !!detailed);
   if (detailed) {
@@ -168,7 +171,7 @@ export function calculateResult(
   identity: Identity,
   answers: Answer[]
 ): AssessmentResult {
-  const scores = calculateDimensionScores(answers, identity);
+  const scores = calculateDimensionScores(answers);
   const actualType = calculatePersonalityType(scores);
   const badges = generateBadges(answers, scores);
 

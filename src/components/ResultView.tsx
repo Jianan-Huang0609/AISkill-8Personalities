@@ -113,17 +113,3 @@ export default function ResultView({ result }: ResultViewProps) {
   );
 }
 
-function getDimensionName(key: string): string {
-  const names: Record<string, string> = {
-    theory: '理论洞察力',
-    engineering: '工程实现力',
-    learning: '学习敏捷度',
-    collaboration: 'AI协作力',
-    radar: '信息雷达',
-    innovation: '创新突破力',
-    influence: '影响力声量',
-    aesthetics: '表达审美力',
-  };
-  return names[key] || key;
-}
-

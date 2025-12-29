@@ -9,9 +9,7 @@ function App() {
     currentStep, 
     answers, 
     identity, 
-    result, 
-    setResult,
-    setCurrentStep 
+    result
   } = useQuestionnaireStore();
 
   // 检查是否完成问卷
@@ -23,7 +21,7 @@ function App() {
   const answeredQuestionIds = new Set(answers.map(a => a.questionId));
   const allRequiredAnswered = requiredQuestions.every(q => answeredQuestionIds.has(q.id));
   
-  const isComplete = currentStep >= totalSteps && identity && allRequiredAnswered;
+  // const isComplete = currentStep >= totalSteps && identity && allRequiredAnswered;
 
   if (result) {
     return <ResultView result={result} />;

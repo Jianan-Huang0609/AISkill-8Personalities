@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuestionnaireStore } from '../store/questionnaireStore';
 import { questions } from '../data/questions';
-import { Answer, Identity, OutputType } from '../types/questionnaire';
+import { Identity, OutputType } from '../types/questionnaire';
 import { calculateResult } from '../utils/scoring';
 import QuestionCard from './QuestionCard';
 import './Questionnaire.css';
@@ -184,7 +184,7 @@ function IdentitySelection({
     { value: '跨界探索者', label: '跨界探索者 - 探索AI与特定领域的深度融合' },
   ];
 
-  const outputTypes = [
+  const outputTypes: OutputType[] = [
     '可运行的系统/产品',
     '被复用的代码/框架',
     '有洞见的论文/方法论',
@@ -192,7 +192,7 @@ function IdentitySelection({
     '可量化的业务结果',
   ];
 
-  const handleOutputToggle = (output: string) => {
+  const handleOutputToggle = (output: OutputType) => {
     if (outputs.includes(output)) {
       onOutputsChange(outputs.filter(o => o !== output));
     } else if (outputs.length < 2) {
@@ -215,7 +215,7 @@ function IdentitySelection({
                 name="identity"
                 value={id.value}
                 checked={identity === id.value}
-                onChange={() => onIdentityChange(id.value)}
+                onChange={() => onIdentityChange(id.value as Identity)}
               />
               <span>{id.label}</span>
             </label>
@@ -234,7 +234,7 @@ function IdentitySelection({
               <input
                 type="checkbox"
                 checked={outputs.includes(output)}
-                onChange={() => handleOutputToggle(output)}
+                onChange={() => handleOutputToggle(output as OutputType)}
                 disabled={outputs.length >= 2 && !outputs.includes(output)}
               />
               <span>{output}</span>
