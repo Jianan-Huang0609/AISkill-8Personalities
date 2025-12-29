@@ -1,0 +1,223 @@
+.onepage-container {
+  width: 1200px;
+  height: 800px;
+  background: var(--snow-white);
+  border: 3px solid var(--christmas-red);
+  border-radius: 20px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible;
+}
+
+.onepage-section {
+  background: var(--snow-white);
+  border: 2px solid var(--light-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.section-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--christmas-red);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--christmas-red);
+}
+
+/* 左上：属性解读 */
+.attribute-section {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.personality-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.personality-name-large {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--christmas-red);
+}
+
+.personality-code-large {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: var(--christmas-gold);
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  width: fit-content;
+}
+
+.personality-metaphor {
+  font-size: 1.1rem;
+  color: var(--christmas-gold);
+  font-weight: 600;
+  font-style: italic;
+}
+
+.personality-description {
+  font-size: 1rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* 左下：核心特质 → 超能力 */
+.traits-section {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+}
+
+.traits-section .section-label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.traits-section .section-label:first-child {
+  margin-top: 0;
+}
+
+.traits-list,
+.strengths-list,
+.blindspots-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.traits-list li,
+.strengths-list li,
+.blindspots-list li {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.traits-list li::before,
+.strengths-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--christmas-green);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.blindspots-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--christmas-red);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* 右上：互补伙伴 */
+.partners-section {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.partners-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.partners-list li {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.partners-list strong {
+  color: var(--christmas-red);
+  font-weight: 700;
+}
+
+.partner-how {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+
+/* 右下：雷达图 */
+.radar-section {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.radar-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.radar-container .radar-chart-container {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.radar-container .recharts-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+.radar-container svg {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  overflow: visible;
+}
+
+@media print {
+  .onepage-container {
+    width: 210mm;
+    height: 297mm;
+    page-break-after: always;
+  }
+}
+

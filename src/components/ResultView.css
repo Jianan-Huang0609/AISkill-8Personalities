@@ -1,0 +1,244 @@
+.result-view {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: var(--snow-white);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.view-mode-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.download-btn {
+  padding: 0.75rem 1.5rem;
+  border: 3px solid var(--christmas-green);
+  border-radius: 10px;
+  background: var(--snow-white);
+  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.download-btn:hover {
+  background: var(--christmas-green);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 139, 34, 0.3);
+}
+
+.download-btn.download-card {
+  border-color: var(--christmas-gold);
+}
+
+.download-btn.download-card:hover {
+  background: var(--christmas-gold);
+  color: var(--text-dark);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.download-btn.download-pdf {
+  border-color: var(--christmas-red);
+}
+
+.download-btn.download-pdf:hover {
+  background: var(--christmas-red);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+.view-mode-selector button {
+  padding: 1rem 2rem;
+  background: var(--light-gray);
+  border: 3px solid transparent;
+  border-radius: 12px;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.view-mode-selector button:hover {
+  background: rgba(200, 16, 46, 0.1);
+  border-color: var(--christmas-red);
+}
+
+.view-mode-selector button.active {
+  background: linear-gradient(135deg, var(--christmas-red), var(--christmas-gold));
+  border-color: var(--christmas-red);
+  color: white;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+.result-report {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scores-section {
+  background: var(--snow-white);
+  border-radius: 20px;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  border: 3px solid var(--christmas-green);
+  box-shadow: 0 8px 24px rgba(34, 139, 34, 0.15);
+}
+
+.scores-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--christmas-red);
+  font-weight: 700;
+}
+
+.radar-chart-container {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: var(--light-gray);
+  border-radius: 16px;
+  border: 2px solid var(--christmas-gold);
+}
+
+.dimension-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.dimension-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--light-gray);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.dimension-item:hover {
+  border-color: var(--christmas-green);
+  background: rgba(34, 139, 34, 0.05);
+}
+
+.dimension-name {
+  min-width: 120px;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.score-bar {
+  flex: 1;
+  height: 28px;
+  background: var(--snow-white);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--christmas-green);
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--christmas-red), var(--christmas-gold), var(--christmas-green));
+  transition: width 0.5s ease;
+}
+
+.score-value {
+  min-width: 60px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 1.1rem;
+}
+
+.badges-section {
+  background: var(--snow-white);
+  border-radius: 20px;
+  padding: 3rem;
+  border: 3px solid var(--christmas-gold);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+}
+
+.badges-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--christmas-red);
+  font-weight: 700;
+}
+
+.badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.badge {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.15), rgba(212, 175, 55, 0.15));
+  border: 2px solid var(--christmas-red);
+  border-radius: 25px;
+  color: var(--text-dark);
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);
+}
+
+@media (max-width: 768px) {
+  .result-view {
+    padding: 1rem;
+  }
+
+  .dimension-details {
+    grid-template-columns: 1fr;
+  }
+
+  .result-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .download-buttons {
+    justify-content: center;
+  }
+
+  .download-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+

@@ -1,0 +1,293 @@
+.all-personality-types {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.types-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.types-header h1 {
+  font-size: 2.5rem;
+  color: var(--christmas-red);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.types-header .subtitle {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.type-card {
+  background: var(--snow-white);
+  border: 2px solid var(--christmas-red);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.type-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(200, 16, 46, 0.2);
+}
+
+.type-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--light-gray);
+}
+
+.type-header h2 {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  margin: 0;
+  font-weight: 700;
+}
+
+.type-code {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--christmas-gold);
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.type-content {
+  color: var(--text-dark);
+}
+
+.type-description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.type-metaphor {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid var(--christmas-gold);
+  font-size: 1rem;
+}
+
+.type-traits,
+.type-strengths {
+  margin-top: 1rem;
+}
+
+.type-traits strong,
+.type-strengths strong {
+  color: var(--christmas-red);
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.type-traits ul,
+.type-strengths ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.type-traits li,
+.type-strengths li {
+  padding: 0.4rem 0;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.type-traits li::before,
+.type-strengths li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--christmas-green);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.calculation-theory {
+  background: var(--snow-white);
+  border: 2px solid var(--christmas-red);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-top: 3rem;
+  box-shadow: 0 8px 24px rgba(200, 16, 46, 0.15);
+}
+
+.calculation-theory h2 {
+  font-size: 2rem;
+  color: var(--christmas-red);
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.theory-section {
+  margin-bottom: 3rem;
+}
+
+.theory-section:last-child {
+  margin-bottom: 0;
+}
+
+.theory-section h3 {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  border-left: 4px solid var(--christmas-gold);
+  padding-left: 1rem;
+}
+
+.theory-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.theory-section ol {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.theory-section li {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.formula-box {
+  background: var(--light-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid var(--christmas-gold);
+}
+
+.formula-box strong {
+  color: var(--christmas-red);
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.formula {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+}
+
+.formula-example {
+  font-size: 1rem;
+  color: var(--text-gray);
+  font-style: italic;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 6px;
+}
+
+.weights-table-container {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.weights-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--snow-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weights-table thead {
+  background: var(--christmas-red);
+  color: white;
+}
+
+.weights-table th {
+  padding: 1rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.weights-table td {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--light-gray);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.weights-table tbody tr:hover {
+  background: rgba(200, 16, 46, 0.05);
+}
+
+.weights-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .all-personality-types {
+    padding: 1rem;
+  }
+
+  .types-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .calculation-theory {
+    padding: 1.5rem;
+  }
+
+  .weights-table-container {
+    overflow-x: scroll;
+  }
+
+  .weights-table {
+    font-size: 0.85rem;
+  }
+
+  .weights-table th,
+  .weights-table td {
+    padding: 0.5rem;
+  }
+}
+
