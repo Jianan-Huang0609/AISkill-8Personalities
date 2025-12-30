@@ -1,0 +1,6 @@
+# Cloudflare 部署时忽略的文件
+# 这个文件确保 _redirects 不会被上传
+
+_redirects
+**/_redirects
+

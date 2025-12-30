@@ -113,7 +113,22 @@ not_found_handling = "single-page-application"
 
 ## 🆘 故障排除
 
-### 问题 1: 部署后路由不工作
+### 问题 1: 部署失败 - Invalid _redirects configuration
+
+**症状**: 部署时报错 `Invalid _redirects configuration: Line 1: Infinite loop detected`
+
+**原因**: `dist/_redirects` 文件存在，触发了无限重定向环
+
+**解决**:
+1. 确保 `public/_redirects` 和根目录 `_redirects` 都已删除
+2. 清理构建缓存：删除 `dist/` 目录
+3. 重新构建：`npm run build`
+4. 确认 `dist/_redirects` 不存在
+5. 重新部署
+
+**注意**: 使用 `wrangler.toml` 中的 `not_found_handling = "single-page-application"` 就足够了，不需要 `_redirects` 文件。
+
+### 问题 2: 部署后路由不工作
 
 **症状**: 直接访问 `/result` 等路由返回 404
 
