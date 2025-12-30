@@ -4,10 +4,23 @@
 name = "ai-skill-tree-assessment"
 compatibility_date = "2024-01-01"
 
-# 注意：Cloudflare Pages 通过 Web UI 配置构建设置
-# 构建命令：npm run build
-# 输出目录：dist
-# Node 版本：18 或更高
+# ⚠️ 重要：Cloudflare Pages 通过 Web UI 自动部署，不需要自定义部署命令
+# 
+# 正确的配置方式：
+# 1. 在 Cloudflare Pages Dashboard 中配置：
+#    - Framework preset: Vite
+#    - Build command: npm run build
+#    - Build output directory: dist
+#    - Node version: 18 或更高
+#    - 不要设置自定义部署命令（Deploy command）！
+#
+# 2. Cloudflare Pages 会自动：
+#    - 运行构建命令
+#    - 上传 dist 目录到全球 CDN
+#    - 不需要手动运行 wrangler deploy
+#
+# 如果必须使用 CLI 手动部署（不推荐），使用：
+# npx wrangler pages deploy dist
 
 # 环境变量（如果需要）
 # [env.production.vars]

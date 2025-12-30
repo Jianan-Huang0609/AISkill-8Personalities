@@ -42,7 +42,11 @@
 
 ## ☁️ Cloudflare Pages 部署
 
-### 手动配置（推荐）
+### ⚠️ 重要：不要设置自定义部署命令！
+
+Cloudflare Pages 会自动处理部署，**不需要**自定义部署命令（Deploy command）。
+
+### 配置步骤（推荐）
 在 Cloudflare Pages 项目设置中配置：
 
 - **框架预设**: Vite
@@ -50,6 +54,7 @@
 - **构建输出目录**: `dist`
 - **Node 版本**: 18 或更高
 - **根目录**: `/`（项目根目录）
+- **部署命令**: ⚠️ **留空或删除**（不要设置 `npx wrangler deploy`！）
 
 ### 部署步骤
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
@@ -57,7 +62,8 @@
 3. 选择 "Connect to Git"
 4. 授权并选择仓库
 5. 配置构建设置（见上方）
-6. 点击 "Save and Deploy"
+6. **确保"Deploy command"字段为空或删除**
+7. 点击 "Save and Deploy"
 
 ### 路由配置
 `public/_redirects` 文件已配置 SPA 路由：
@@ -66,6 +72,16 @@
 ```
 
 此文件会在构建时自动复制到 `dist/` 目录。
+
+### ❌ 常见错误
+
+**错误配置**：
+- 设置部署命令为 `npx wrangler deploy` ❌
+- 这会尝试部署为 Workers，而不是 Pages
+
+**正确配置**：
+- 部署命令留空 ✅
+- Cloudflare Pages 会自动上传 `dist` 目录到全球 CDN
 
 ## ✅ 验证部署
 
