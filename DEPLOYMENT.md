@@ -40,49 +40,62 @@
 - 安装命令已配置为 `npm install --include=optional`
 - SPA 路由已通过 `rewrites` 配置
 
-## ☁️ Cloudflare Pages 部署
+## ☁️ Cloudflare Workers 静态资源部署
 
-### ⚠️ 重要：区分 Workers 和 Pages！
+### ⚠️ 重要：使用 Workers 静态资源部署（不是 Pages）
 
-**你当前可能在 Workers 设置页面，但我们需要的是 Pages！**
+我们的项目是**纯前端 SPA**，使用 **Workers 静态资源部署**：
 
-- **Workers**: 用于服务器端代码，需要 `wrangler deploy`
-- **Pages**: 用于静态网站，自动部署，不需要部署命令
+- **Workers 静态资源**: 部署 SPA，支持前端路由回退
+- **Pages**: 也可以部署静态网站，但 Workers 更灵活
 
-我们的项目是静态网站，应该使用 **Pages**。
+**关键配置**：`wrangler.toml` 中配置了 `assets.directory` 和 `not_found_handling`，这是 Workers 静态资源部署方式。
 
-### ⚠️ 重要：不要设置自定义部署命令！
+### 部署方式
 
-Cloudflare Pages 会自动处理部署，**不需要**自定义部署命令（Deploy command）。
+#### 方式 1: 通过 Cloudflare Dashboard（推荐）
 
-### 配置步骤（推荐）
-在 Cloudflare Pages 项目设置中配置：
-
-- **框架预设**: Vite
-- **构建命令**: `npm run build`
-- **构建输出目录**: `dist`
-- **Node 版本**: 18 或更高
-- **根目录**: `/`（项目根目录）
-- **部署命令**: ⚠️ **留空或删除**（不要设置 `npx wrangler deploy`！）
-
-### 部署步骤
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. **重要**: 点击左侧菜单 **"Workers 和 Pages"** → **"Pages"** 标签（不是 Workers！）
-3. 点击 **"Create a project"**
-4. 选择 **"Connect to Git"**
-5. 授权并选择仓库
-6. 配置构建设置（见上方）
-7. **确保"Deploy command"字段为空或删除**
+2. 进入 **"Workers 和 Pages"**
+3. 点击 **"创建应用程序"** (Create Application)
+4. **选择 "Workers"**（不是 Pages）
+5. 选择 **"Connect to Git"**
+6. 选择仓库：`Jianan-Huang0609/AISkill-8Personalities`
+7. 配置构建设置：
+   - **构建命令**: `npm run build`
+   - **部署命令**: `npx wrangler deploy`
+   - **根目录**: `/`
 8. 点击 "Save and Deploy"
 
-### 如何确认你在 Pages 而不是 Workers
+#### 方式 2: 本地 CLI 部署
 
-- ✅ **Pages**: URL 包含 `/pages/`，左侧菜单显示 "Pages" 项目
-- ❌ **Workers**: URL 包含 `/workers/`，左侧菜单显示 "Workers" 项目
+```bash
+# 构建并部署
+npm run deploy:cloudflare
 
-如果你看到的是 Workers 设置页面，请：
-1. 删除当前的 Workers 项目（如果误创建了）
-2. 按照上述步骤创建新的 **Pages** 项目
+# 或分步执行
+npm run build
+npx wrangler deploy
+```
+
+### 配置说明
+
+`wrangler.toml` 已配置：
+
+```toml
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
+```
+
+这会让：
+- 静态资源（如 `/assets/index.js`）直接返回
+- 前端路由（如 `/result`）回退到 `index.html`（200）
+- 支持 React Router 等前端路由
+
+### 详细文档
+
+查看 `CLOUDFLARE_WORKERS_DEPLOY.md` 获取完整的部署指南。
 
 ### 路由配置
 `public/_redirects` 文件已配置 SPA 路由：

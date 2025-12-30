@@ -9,7 +9,8 @@
     "build": "tsc && vite build",
     "build:ci": "npm ci && npm install --include=optional --no-save && npm run build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "deploy:cloudflare": "npm run build && npx wrangler deploy"
   },
   "dependencies": {
     "react": "^18.2.0",

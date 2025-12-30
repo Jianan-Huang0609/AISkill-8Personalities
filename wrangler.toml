@@ -1,26 +1,28 @@
-# Cloudflare Pages 配置文件
-# 用于 Cloudflare Pages 部署
+# Cloudflare Workers 静态资源部署配置
+# 用于部署 SPA（Single Page Application）
 
 name = "ai-skill-tree-assessment"
-compatibility_date = "2024-01-01"
+compatibility_date = "2025-12-30"
 
-# ⚠️ 重要：Cloudflare Pages 通过 Web UI 自动部署，不需要自定义部署命令
-# 
-# 正确的配置方式：
-# 1. 在 Cloudflare Pages Dashboard 中配置：
-#    - Framework preset: Vite
-#    - Build command: npm run build
-#    - Build output directory: dist
-#    - Node version: 18 或更高
-#    - 不要设置自定义部署命令（Deploy command）！
+# 静态资源配置
+# 将 dist/ 目录作为静态资源目录，并启用 SPA 路由回退
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
+
+# 说明：
+# - directory: 指向构建产物目录（Vite 默认输出到 dist/）
+# - not_found_handling: 当请求的路径在 dist/ 中找不到时，返回 index.html（200）
+#   这样前端路由（如 React Router）就能正常工作
 #
-# 2. Cloudflare Pages 会自动：
-#    - 运行构建命令
-#    - 上传 dist 目录到全球 CDN
-#    - 不需要手动运行 wrangler deploy
+# 部署方式：
+# 1. 本地构建：npm run build
+# 2. 部署到 Cloudflare：npx wrangler deploy
 #
-# 如果必须使用 CLI 手动部署（不推荐），使用：
-# npx wrangler pages deploy dist
+# 注意：
+# - 这是纯静态资源部署，不需要 Worker 脚本（没有 main 字段）
+# - 所有路由都会回退到 index.html，支持前端路由
+# - compatibility_date >= 2025-04-01 时，导航请求会优先走静态资源，减少 Worker 调用
 
 # 环境变量（如果需要）
 # [env.production.vars]
