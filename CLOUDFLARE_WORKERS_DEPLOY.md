@@ -201,8 +201,20 @@ run_worker_first = true
 ## ✅ 验证部署
 
 部署成功后，访问你的 Workers URL：
-- 格式：`https://ai-skill-tree-assessment.[你的子域].workers.dev`
+- 格式：`https://aiskill-8personalities.[你的子域].workers.dev`
 - 测试路由：访问 `/result` 应该返回 `index.html`（不是 404）
+
+### ⚠️ 国内访问问题
+
+**`*.workers.dev` 域名在某些地区可能无法访问**（包括中国大陆）。
+
+**解决方案**：绑定自定义域名
+
+1. 在 Workers 项目设置中添加自定义域名
+2. 配置 DNS 记录（CNAME 指向 Workers）
+3. 等待 DNS 和 SSL 生效
+
+详细步骤请查看 `CUSTOM_DOMAIN_SETUP.md`。
 
 ---
 
