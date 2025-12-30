@@ -1,4 +1,5 @@
 import { AssessmentResult } from '../types/questionnaire';
+import { useLanguage } from '../contexts/LanguageContext';
 import './PersonalityCard.css';
 
 interface PersonalityCardProps {
@@ -6,6 +7,7 @@ interface PersonalityCardProps {
 }
 
 export default function PersonalityCard({ result }: PersonalityCardProps) {
+  const { language, t } = useLanguage();
   const { actualType, scores, bias } = result;
 
   // 按照Plan.md的格式计算三个维度值
@@ -33,12 +35,14 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
     hasDetailedAdvice: !!actualType.detailedAdvice,
   });
 
+  const refinedPrefix = language === 'en' ? 'Refined ' : '精致 ';
+  
   return (
     <div className="personality-card">
       <div className="card-header">
-        <h1>🧩 你的AI人格类型</h1>
+        <h1>{t('result.personalityType')}</h1>
         <h2 className="personality-name">
-          {isRefined ? '精致 ' : ''}{actualType.name}
+          {isRefined ? refinedPrefix : ''}{actualType.name}
         </h2>
         <div className="personality-code">{actualType.code}</div>
       </div>
@@ -46,7 +50,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
       <div className="card-body">
         <div className="dimension-bars">
           <div className="dimension-bar">
-            <span className="dim-label">抽象(A)</span>
+            <span className="dim-label">{t('result.abstract')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -56,7 +60,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
             <span className="dim-value">{A_score.toFixed(1)}</span>
           </div>
           <div className="dimension-bar">
-            <span className="dim-label">具体(C)</span>
+            <span className="dim-label">{t('result.concrete')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -66,7 +70,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
             <span className="dim-value">{C_score.toFixed(1)}</span>
           </div>
           <div className="dimension-bar">
-            <span className="dim-label">广度(B)</span>
+            <span className="dim-label">{t('result.breadth')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -76,7 +80,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
             <span className="dim-value">{B_score.toFixed(1)}</span>
           </div>
           <div className="dimension-bar">
-            <span className="dim-label">深度(D)</span>
+            <span className="dim-label">{t('result.depth')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -86,7 +90,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
             <span className="dim-value">{D_score.toFixed(1)}</span>
           </div>
           <div className="dimension-bar">
-            <span className="dim-label">独立(I)</span>
+            <span className="dim-label">{t('result.independent')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -96,7 +100,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
             <span className="dim-value">{I_score.toFixed(1)}</span>
           </div>
           <div className="dimension-bar">
-            <span className="dim-label">协作(O)</span>
+            <span className="dim-label">{t('result.collaborative')}</span>
             <div className="bar">
               <div 
                 className="bar-fill" 
@@ -110,8 +114,8 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
         {isRefined && (
           <div className="refined-badge">
             <span className="badge-icon">✨</span>
-            <span>附加特质：精致</span>
-            <span className="aesthetics-score">审美得分：{scores.aesthetics.toFixed(1)}/10</span>
+            <span>{t('result.refinedTrait')}</span>
+            <span className="aesthetics-score">{t('result.aestheticsScore')}{scores.aesthetics.toFixed(1)}/10</span>
           </div>
         )}
 
@@ -121,14 +125,14 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
 
         {actualType.metaphor && (
           <div className="metaphor-section">
-            <h3>🎭 形象比喻</h3>
+            <h3>{t('result.metaphor')}</h3>
             <p className="metaphor-text">{actualType.metaphor}</p>
           </div>
         )}
 
         {actualType.coreTraits && actualType.coreTraits.length > 0 && (
           <div className="core-traits">
-            <h3>🧬 核心特质</h3>
+            <h3>{t('result.coreTraits')}</h3>
             <ul>
               {actualType.coreTraits.map((trait, i) => (
                 <li key={i}>{trait}</li>
@@ -138,7 +142,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
         )}
 
         <div className="strengths">
-          <h3>🌟 你的超能力</h3>
+          <h3>{t('result.superpowers')}</h3>
           <ul>
             {actualType.strengths.map((strength, i) => (
               <li key={i}>{strength}</li>
@@ -148,7 +152,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
 
         {actualType.blindSpots && actualType.blindSpots.length > 0 && (
           <div className="blind-spots">
-            <h3>⚠️ 潜在盲点</h3>
+            <h3>{t('result.blindSpots')}</h3>
             <ul>
               {actualType.blindSpots.map((spot, i) => (
                 <li key={i}>{spot}</li>
@@ -158,7 +162,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
         )}
 
         <div className="growth">
-          <h3>💡 2026成长处方</h3>
+          <h3>{t('result.growthPrescription')}</h3>
           {actualType.detailedAdvice && actualType.detailedAdvice.length > 0 ? (
             actualType.detailedAdvice.map((adviceGroup, i) => (
               <div key={i} className="advice-group">
@@ -181,7 +185,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
 
         {actualType.partners && actualType.partners.length > 0 && (
           <div className="partners">
-            <h3>🤝 互补伙伴</h3>
+            <h3>{t('result.complementaryPartners')}</h3>
             <ul>
               {actualType.partners.map((partner, i) => (
                 <li key={i}>
@@ -195,7 +199,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
 
         {actualType.yearlyFocus && actualType.yearlyFocus.length > 0 && (
           <div className="yearly-focus">
-            <h3>📅 年度发展重点</h3>
+            <h3>{t('result.yearlyFocus')}</h3>
             <ul>
               {actualType.yearlyFocus.map((focus, i) => (
                 <li key={i}>{focus}</li>
@@ -205,7 +209,7 @@ export default function PersonalityCard({ result }: PersonalityCardProps) {
         )}
 
         <div className="bias-info">
-          <p>认知偏差：<strong>{bias}</strong></p>
+          <p>{t('result.cognitiveBias')}<strong>{bias}</strong></p>
         </div>
 
         {/* 人格类型图片 */}

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { QuestionnaireState, Answer, Identity, OutputType, AssessmentResult } from '../types/questionnaire';
+import { getIdentityRole } from '../types/identity';
 
 interface QuestionnaireStore extends QuestionnaireState {
   setIdentity: (identity: Identity) => void;
@@ -16,7 +17,7 @@ const initialState: QuestionnaireState = {
   identity: null,
   outputs: [],
   answers: [],
-  currentStep: 0,
+  currentStep: -1, // 从预告页开始
 };
 
 export const useQuestionnaireStore = create<QuestionnaireStore>((set) => ({

@@ -32,23 +32,24 @@ function formatAnswer(question: any, answer: Answer): string {
 }
 
 // 生成Markdown格式的完整报告
-export function generateMarkdownReport(result: AssessmentResult): string {
+export function generateMarkdownReport(result: AssessmentResult, language: 'zh' | 'en' = 'zh'): string {
   const { identity, actualType, scores, badges, bias, highlights, answers = [], outputs = [] } = result;
-  const date = new Date().toLocaleDateString('zh-CN', { 
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
+  const date = new Date().toLocaleDateString(locale, { 
     year: 'numeric', 
     month: 'long', 
     day: 'numeric' 
   });
 
   const dimensionNames: Record<string, string> = {
-    theory: '理论洞察力',
-    engineering: '工程实现力',
-    learning: '学习敏捷度',
-    collaboration: 'AI协作力',
-    radar: '信息雷达',
-    innovation: '创新突破力',
-    influence: '影响力声量',
-    aesthetics: '表达审美力',
+    theory: language === 'en' ? 'Theoretical Insight' : '理论洞察力',
+    engineering: language === 'en' ? 'Engineering Execution' : '工程实现力',
+    learning: language === 'en' ? 'Learning Agility' : '学习敏捷度',
+    collaboration: language === 'en' ? 'AI Collaboration' : 'AI协作力',
+    radar: language === 'en' ? 'Information Radar' : '信息雷达',
+    innovation: language === 'en' ? 'Innovation Breakthrough' : '创新突破力',
+    influence: language === 'en' ? 'Influence Voice' : '影响力声量',
+    aesthetics: language === 'en' ? 'Expression Aesthetics' : '表达审美力',
   };
 
   // 计算三个维度得分
@@ -59,21 +60,32 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   const I_score = scores.innovation;
   const O_score = (scores.collaboration + scores.influence) / 2;
 
-  let md = `# 🧩 2025年AI技能树评测报告\n\n`;
-  md += `**生成时间**: ${date}\n\n`;
+  const title = language === 'en' 
+    ? '# 🧩 2025 AI Skill Tree Assessment Report\n\n'
+    : '# 🧩 2025年AI技能树评测报告\n\n';
+  const generatedTime = language === 'en' ? '**Generated Time**' : '**生成时间**';
+  const section1 = language === 'en' ? '## I. Identity Positioning\n\n' : '## 一、身份定位\n\n';
+  const section2 = language === 'en' ? '## II. Core Personality Profile\n\n' : '## 二、核心人格画像\n\n';
+  const mainRole = language === 'en' ? '**Your Main AI Role in 2025**' : '**你的2025年AI主角色**';
+  const outputForm = language === 'en' ? '**Main Output Forms**' : '**主要产出形式**';
+  const personalityCode = language === 'en' ? '### Your AI Personality Code' : '### 你的AI人格代码';
+  const separator = language === 'en' ? ', ' : '、';
+
+  let md = title;
+  md += `${generatedTime}: ${date}\n\n`;
   md += `---\n\n`;
 
   // 一、身份定位
-  md += `## 一、身份定位\n\n`;
-  md += `**你的2025年AI主角色**: ${identity}\n\n`;
+  md += section1;
+  md += `${mainRole}: ${identity}\n\n`;
   if (outputs.length > 0) {
-    md += `**主要产出形式**: ${outputs.join('、')}\n\n`;
+    md += `${outputForm}: ${outputs.join(separator)}\n\n`;
   }
   md += `---\n\n`;
 
   // 二、核心人格画像
-  md += `## 二、核心人格画像\n\n`;
-  md += `### 你的AI人格代码：${actualType.code}\n\n`;
+  md += section2;
+  md += `${personalityCode}: ${actualType.code}\n\n`;
   
   if (actualType.coreTraits && actualType.coreTraits.length > 0) {
     actualType.coreTraits.forEach(trait => {
@@ -81,21 +93,85 @@ export function generateMarkdownReport(result: AssessmentResult): string {
     });
   }
   
+  const metaphorLabel = language === 'en' ? '**Metaphor**' : '**形象比喻**';
+  const descriptionLabel = language === 'en' ? '**Personality Description**' : '**人格描述**';
+  const identityLabel = language === 'en' ? '**Preset Identity**' : '**预设身份**';
+  const biasLabel = language === 'en' ? '**Cognitive Bias**' : '**认知偏差**';
+  const section3 = language === 'en' ? '## III. Dimension Score Analysis\n\n' : '## 三、维度得分分析\n\n';
+  const section4 = language === 'en' ? '## IV. Strengths & Achievement Patterns\n\n' : '## 四、优势与成就模式\n\n';
+  const section5 = language === 'en' ? '## V. Potential Blind Spots & Development Advice\n\n' : '## 五、潜在盲点与发展建议\n\n';
+  const section6 = language === 'en' ? '## VI. Achievements & Highlights\n\n' : '## 六、成就与高光\n\n';
+  const section7 = language === 'en' ? '## VII. Questionnaire Answers Details\n\n' : '## 七、问卷答案详情\n\n';
+  const section8 = language === 'en' ? '## VIII. Appendix\n\n' : '## 八、附录\n\n';
+  const dimensionLabel = language === 'en' ? 'Dimension' : '维度';
+  const scoreLabel = language === 'en' ? 'Score' : '得分';
+  const levelLabel = language === 'en' ? 'Level' : '等级';
+  const eightDimensions = language === 'en' ? '### Eight-Dimension Ability Scores\n\n' : '### 八维能力得分\n\n';
+  const threeCoreDimensions = language === 'en' ? '### Three Core Dimensions\n\n' : '### 三个核心维度\n\n';
+  const superpowers = language === 'en' ? '### 🌟 Your Superpowers\n\n' : '### 🌟 你的超能力\n\n';
+  const successFormula = language === 'en' ? '### 🚀 Success Formula\n\n' : '### 🚀 成功方程式\n\n';
+  const careerPath = language === 'en' ? '### 📈 Career Path\n\n' : '### 📈 职业生涯路径\n\n';
+  const blindSpots = language === 'en' ? '### ⚠️ Common Blind Spots\n\n' : '### ⚠️ 常见盲点\n\n';
+  const growthPrescription = language === 'en' ? '### 💡 2026 Growth Prescription\n\n' : '### 💡 2026年成长处方\n\n';
+  const partners = language === 'en' ? '### 🤝 Complementary Partners\n\n' : '### 🤝 互补伙伴\n\n';
+  const howComplement = language === 'en' ? '- How to complement: ' : '- 如何互补：';
+  const partnerNote = language === 'en' ? '- Cooperation Notes: ' : '- 合作注意事项：';
+  const yearlyFocus = language === 'en' ? '### 📅 Annual Development Focus\n\n' : '### 📅 年度发展重点\n\n';
+  const evolutionPath = language === 'en' ? '### 🎯 Personality Evolution Path\n\n' : '### 🎯 人格进化路径\n\n';
+  const badgesLabel = language === 'en' ? '### 🏆 Achievement Badges\n\n' : '### 🏆 成就徽章\n\n';
+  const highlightsLabel = language === 'en' ? '### ✨ Highlight Moments\n\n' : '### ✨ 高光时刻\n\n';
+  const dimensionDesc = language === 'en' ? '### 📈 Dimension Descriptions\n\n' : '### 📈 维度说明\n\n';
+  const decisionStyle = language === 'en' ? '### 🎯 Decision Style\n\n' : '### 🎯 决策模式\n\n';
+  const coreDecision = language === 'en' ? '**Core Decision Logic**' : '**核心决策逻辑**';
+  const workStyle = language === 'en' ? '### 💼 Work Style\n\n' : '### 💼 工作风格\n\n';
+  const learningStyle = language === 'en' ? '### 🎓 Learning Style\n\n' : '### 🎓 学习模式\n\n';
+  const pressureResponse = language === 'en' ? '### 😰 Pressure Response\n\n' : '### 😰 压力状态\n\n';
+  const recoveryStrategies = language === 'en' ? '### 🛟 Recovery Strategies\n\n' : '### 🛟 恢复策略\n\n';
+  const abstractLabel = language === 'en' ? 'Abstract (A)' : '抽象(A)';
+  const concreteLabel = language === 'en' ? 'Concrete (C)' : '具体(C)';
+  const breadthLabel = language === 'en' ? 'Breadth (B)' : '广度(B)';
+  const depthLabel = language === 'en' ? 'Depth (D)' : '深度(D)';
+  const independentLabel = language === 'en' ? 'Independent (I)' : '独立(I)';
+  const collaborativeLabel = language === 'en' ? 'Collaborative (O)' : '协作(O)';
+  const optionAnswer = language === 'en' ? '*Option Answer*' : '*选项答案*';
+  const dimensionDescriptions = language === 'en' ? [
+    '- **Theoretical Insight**: Understanding depth and systematic thinking ability of AI theory',
+    '- **Engineering Execution**: Ability to transform ideas into runnable systems',
+    '- **Learning Agility**: Ability to learn quickly and transfer knowledge',
+    '- **AI Collaboration**: Ability to collaborate efficiently with AI tools',
+    '- **Information Radar**: Ability to acquire and predict cutting-edge information',
+    '- **Innovation Breakthrough**: Ability to discover problems and original exploration',
+    '- **Influence Voice**: Ability to produce content and spread viewpoints',
+    '- **Expression Aesthetics**: Emphasis on product aesthetics and user experience'
+  ] : [
+    '- **理论洞察力**: 对AI理论的理解深度和系统化思考能力',
+    '- **工程实现力**: 将想法转化为可运行系统的能力',
+    '- **学习敏捷度**: 快速学习和知识迁移的能力',
+    '- **AI协作力**: 与AI工具高效协作的能力',
+    '- **信息雷达**: 获取和预判前沿信息的能力',
+    '- **创新突破力**: 发现问题和原创探索的能力',
+    '- **影响力声量**: 内容产出和观点传播的能力',
+    '- **表达审美力**: 产品美感和用户体验的重视程度'
+  ];
+  const footerText = language === 'en' 
+    ? '*This report is generated by the 2025 AI Skill Tree Assessment System*\n*For more information, visit: https://ai-skill-tree.vercel.app*\n'
+    : '*本报告由2025年AI技能树评测系统生成*\n*更多信息请访问: https://ai-skill-tree.vercel.app*\n';
+
   if (actualType.metaphor) {
-    md += `**形象比喻**: ${actualType.metaphor}\n\n`;
+    md += `${metaphorLabel}: ${actualType.metaphor}\n\n`;
   }
   
-  md += `**人格描述**: ${actualType.description}\n\n`;
-  md += `**预设身份**: ${identity}\n`;
-  md += `**认知偏差**: ${bias}\n\n`;
+  md += `${descriptionLabel}: ${actualType.description}\n\n`;
+  md += `${identityLabel}: ${identity}\n`;
+  md += `${biasLabel}: ${bias}\n\n`;
   
   // 添加人格类型图片（Markdown格式）
   md += `![${actualType.name}](/8Cats/${actualType.code.replace(/-/g, '')}.png)\n\n`;
 
   // 三、维度得分分析
-  md += `## 三、维度得分分析\n\n`;
-  md += `### 八维能力得分\n\n`;
-  md += `| 维度 | 得分 | 等级 |\n`;
+  md += section3;
+  md += eightDimensions;
+  md += `| ${dimensionLabel} | ${scoreLabel} | ${levelLabel} |\n`;
   md += `|------|------|------|\n`;
   
   Object.entries(scores).forEach(([key, score]) => {
@@ -106,32 +182,32 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   md += `\n`;
 
   // 三个核心维度
-  md += `### 三个核心维度\n\n`;
-  md += `| 维度 | 得分 |\n`;
+  md += threeCoreDimensions;
+  md += `| ${dimensionLabel} | ${scoreLabel} |\n`;
   md += `|------|------|\n`;
-  md += `| 抽象(A) | ${A_score.toFixed(1)}/10 |\n`;
-  md += `| 具体(C) | ${C_score.toFixed(1)}/10 |\n`;
-  md += `| 广度(B) | ${B_score.toFixed(1)}/10 |\n`;
-  md += `| 深度(D) | ${D_score.toFixed(1)}/10 |\n`;
-  md += `| 独立(I) | ${I_score.toFixed(1)}/10 |\n`;
-  md += `| 协作(O) | ${O_score.toFixed(1)}/10 |\n\n`;
+  md += `| ${abstractLabel} | ${A_score.toFixed(1)}/10 |\n`;
+  md += `| ${concreteLabel} | ${C_score.toFixed(1)}/10 |\n`;
+  md += `| ${breadthLabel} | ${B_score.toFixed(1)}/10 |\n`;
+  md += `| ${depthLabel} | ${D_score.toFixed(1)}/10 |\n`;
+  md += `| ${independentLabel} | ${I_score.toFixed(1)}/10 |\n`;
+  md += `| ${collaborativeLabel} | ${O_score.toFixed(1)}/10 |\n\n`;
   md += `---\n\n`;
 
   // 四、优势与成就模式
-  md += `## 四、优势与成就模式\n\n`;
-  md += `### 🌟 你的超能力\n\n`;
+  md += section4;
+  md += superpowers;
   actualType.strengths.forEach((strength, i) => {
     md += `${i + 1}. ${strength}\n`;
   });
   md += `\n`;
 
   if (actualType.successFormula) {
-    md += `### 🚀 成功方程式\n\n`;
+    md += successFormula;
     md += `${actualType.successFormula}\n\n`;
   }
 
   if (actualType.careerPath && actualType.careerPath.length > 0) {
-    md += `### 📈 职业生涯路径\n\n`;
+    md += careerPath;
     actualType.careerPath.forEach((path, i) => {
       md += `${i + 1}. ${path}\n`;
     });
@@ -139,17 +215,17 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   // 五、潜在盲点与发展建议
-  md += `## 五、潜在盲点与发展建议\n\n`;
+  md += section5;
   
   if (actualType.blindSpots && actualType.blindSpots.length > 0) {
-    md += `### ⚠️ 常见盲点\n\n`;
+    md += blindSpots;
     actualType.blindSpots.forEach((spot, i) => {
       md += `${i + 1}. ${spot}\n`;
     });
     md += `\n`;
   }
 
-  md += `### 💡 2026年成长处方\n\n`;
+  md += growthPrescription;
   if (actualType.detailedAdvice && actualType.detailedAdvice.length > 0) {
     actualType.detailedAdvice.forEach((adviceGroup) => {
       md += `#### ${adviceGroup.title}\n\n`;
@@ -166,19 +242,19 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   if (actualType.partners && actualType.partners.length > 0) {
-    md += `### 🤝 互补伙伴\n\n`;
+    md += partners;
     actualType.partners.forEach((partner) => {
       md += `**${partner.type}**\n`;
-      md += `- 如何互补：${partner.how}\n`;
+      md += `${howComplement}${partner.how}\n`;
       if (partner.note) {
-        md += `- 合作注意事项：${partner.note}\n`;
+        md += `${partnerNote}${partner.note}\n`;
       }
       md += `\n`;
     });
   }
 
   if (actualType.yearlyFocus && actualType.yearlyFocus.length > 0) {
-    md += `### 📅 年度发展重点\n\n`;
+    md += yearlyFocus;
     actualType.yearlyFocus.forEach((focus, i) => {
       md += `${i + 1}. ${focus}\n`;
     });
@@ -186,14 +262,14 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   if (actualType.evolutionPath) {
-    md += `### 🎯 人格进化路径\n\n`;
+    md += evolutionPath;
     md += `${actualType.evolutionPath}\n\n`;
   }
 
   // 六、成就与高光
   if (badges.length > 0) {
-    md += `## 六、成就与高光\n\n`;
-    md += `### 🏆 成就徽章\n\n`;
+    md += section6;
+    md += badgesLabel;
     badges.forEach(badge => {
       md += `- 🎖️ ${badge}\n`;
     });
@@ -201,7 +277,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   if (highlights.length > 0) {
-    md += `### ✨ 高光时刻\n\n`;
+    md += highlightsLabel;
     highlights.forEach((highlight, i) => {
       md += `${i + 1}. ${highlight}\n`;
     });
@@ -210,7 +286,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
 
   // 七、问卷答案详情
   if (answers.length > 0) {
-    md += `## 七、问卷答案详情\n\n`;
+    md += section7;
     
     // 按部分分组问题
     const questionsByPart: Record<string, typeof questions> = {};
@@ -234,7 +310,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
           if (answer.text && answer.text.trim()) {
             md += `> ${answer.text}\n\n`;
             if (formattedAnswer && formattedAnswer !== answer.text) {
-              md += `*选项答案*: ${formattedAnswer}\n\n`;
+              md += `${optionAnswer}: ${formattedAnswer}\n\n`;
             }
           } else {
             md += `> ${formattedAnswer}\n\n`;
@@ -246,24 +322,20 @@ export function generateMarkdownReport(result: AssessmentResult): string {
 
   // 八、附录
   md += `---\n\n`;
-  md += `## 八、附录\n\n`;
-  md += `### 📈 维度说明\n\n`;
-  md += `- **理论洞察力**: 对AI理论的理解深度和系统化思考能力\n`;
-  md += `- **工程实现力**: 将想法转化为可运行系统的能力\n`;
-  md += `- **学习敏捷度**: 快速学习和知识迁移的能力\n`;
-  md += `- **AI协作力**: 与AI工具高效协作的能力\n`;
-  md += `- **信息雷达**: 获取和预判前沿信息的能力\n`;
-  md += `- **创新突破力**: 发现问题和原创探索的能力\n`;
-  md += `- **影响力声量**: 内容产出和观点传播的能力\n`;
-  md += `- **表达审美力**: 产品美感和用户体验的重视程度\n\n`;
+  md += section8;
+  md += dimensionDesc;
+  dimensionDescriptions.forEach(desc => {
+    md += `${desc}\n`;
+  });
+  md += `\n`;
 
   if (actualType.decisionStyle) {
-    md += `### 🎯 决策模式\n\n`;
-    md += `**核心决策逻辑**: ${actualType.decisionStyle}\n\n`;
+    md += decisionStyle;
+    md += `${coreDecision}: ${actualType.decisionStyle}\n\n`;
   }
 
   if (actualType.workStyle && actualType.workStyle.length > 0) {
-    md += `### 💼 工作风格\n\n`;
+    md += workStyle;
     actualType.workStyle.forEach((style, i) => {
       md += `${i + 1}. ${style}\n`;
     });
@@ -271,12 +343,12 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   if (actualType.learningStyle) {
-    md += `### 🎓 学习模式\n\n`;
+    md += learningStyle;
     md += `${actualType.learningStyle}\n\n`;
   }
 
   if (actualType.pressureResponse && actualType.pressureResponse.length > 0) {
-    md += `### 😰 压力状态\n\n`;
+    md += pressureResponse;
     actualType.pressureResponse.forEach((response, i) => {
       md += `${i + 1}. ${response}\n`;
     });
@@ -284,7 +356,7 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   if (actualType.recoveryStrategies && actualType.recoveryStrategies.length > 0) {
-    md += `### 🛟 恢复策略\n\n`;
+    md += recoveryStrategies;
     actualType.recoveryStrategies.forEach((strategy, i) => {
       md += `${i + 1}. ${strategy}\n`;
     });
@@ -292,20 +364,22 @@ export function generateMarkdownReport(result: AssessmentResult): string {
   }
 
   md += `---\n\n`;
-  md += `*本报告由2025年AI技能树评测系统生成*\n`;
-  md += `*更多信息请访问: https://ai-skill-tree.vercel.app*\n`;
+  md += footerText;
 
   return md;
 }
 
 // 下载Markdown文件
-export function downloadMarkdown(result: AssessmentResult) {
-  const md = generateMarkdownReport(result);
+export function downloadMarkdown(result: AssessmentResult, language: 'zh' | 'en' = 'zh') {
+  const md = generateMarkdownReport(result, language);
   const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
+  const filename = language === 'en' 
+    ? `AI_Skill_Tree_Report_${result.actualType.name}_${new Date().toISOString().split('T')[0]}.md`
+    : `AI技能树评测报告_${result.actualType.name}_${new Date().toISOString().split('T')[0]}.md`;
   link.href = url;
-  link.download = `AI技能树评测报告_${result.actualType.name}_${new Date().toISOString().split('T')[0]}.md`;
+  link.download = filename;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -357,7 +431,7 @@ export async function generatePDFReport(result: AssessmentResult) {
     return false;
   };
 
-  // 辅助函数：添加文本（自动换行）
+  // 辅助函数：添加文本（自动换行，处理中文）
   const addText = (text: string, fontSize: number = 11, color: number[] = [0, 0, 0], isBold: boolean = false) => {
     doc.setFontSize(fontSize);
     if (isBold) {
@@ -366,12 +440,32 @@ export async function generatePDFReport(result: AssessmentResult) {
       doc.setFont('helvetica', 'normal');
     }
     doc.setTextColor(color[0], color[1], color[2]);
-    const lines = doc.splitTextToSize(text, pageWidth - 2 * margin);
-    lines.forEach((line: string) => {
+    
+    // 处理中文：将文本转换为UTF-8编码的字符串
+    // jsPDF对中文支持有限，使用splitTextToSize可能有问题
+    // 尝试直接使用text方法，如果失败则使用备用方案
+    try {
+      const lines = doc.splitTextToSize(text, pageWidth - 2 * margin);
+      lines.forEach((line: string) => {
+        checkPage();
+        // 使用UTF-8编码
+        doc.text(line, margin, yPos, { encoding: 'UTF8' });
+        yPos += lineHeight;
+      });
+    } catch (error) {
+      // 如果失败，尝试直接输出（可能显示为乱码）
+      console.warn('PDF文本编码失败，尝试备用方案:', error);
       checkPage();
-      doc.text(line, margin, yPos);
-      yPos += lineHeight;
-    });
+      // 使用简单的文本替换，避免特殊字符
+      const safeText = text.replace(/[^\x00-\x7F]/g, '?'); // 将非ASCII字符替换为?
+      const lines = doc.splitTextToSize(safeText, pageWidth - 2 * margin);
+      lines.forEach((line: string) => {
+        checkPage();
+        doc.text(line, margin, yPos);
+        yPos += lineHeight;
+      });
+    }
+    
     if (isBold) {
       doc.setFont('helvetica', 'normal');
     }

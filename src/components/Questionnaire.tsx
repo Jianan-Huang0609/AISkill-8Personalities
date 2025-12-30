@@ -3,18 +3,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuestionnaireStore } from '../store/questionnaireStore';
 import { questions } from '../data/questions';
 import { Identity, OutputType } from '../types/questionnaire';
+import { identityRoles, OutputType as NewOutputType, getIdentityRole } from '../types/identity';
+import { useIdentity } from '../contexts/IdentityContext';
+import { generateQuestionsByTrack } from '../utils/questionRouter';
 import { calculateResult } from '../utils/scoring';
 import QuestionCard from './QuestionCard';
 import './Questionnaire.css';
 
 export default function Questionnaire() {
   const { currentStep, setCurrentStep, updateAnswer, identity, setIdentity, setOutputs, outputs, answers, setResult } = useQuestionnaireStore();
+  const { track } = useIdentity();
   const [localAnswers, setLocalAnswers] = useState<Record<string, any>>({});
   const [localTexts, setLocalTexts] = useState<Record<string, string>>({});
 
-  // 过滤掉PART 0的问题（单独处理）
-  const regularQuestions = questions.filter(q => q.part !== 'PART 0');
+  // 根据轨道动态加载问题
+  // 如果identity已选择但track还未更新，使用identity直接获取track
+  let currentTrack = track;
+  if (!currentTrack && identity) {
+    const role = getIdentityRole(identity);
+    currentTrack = role?.track || null;
+  }
+  
+  const regularQuestions = currentTrack 
+    ? generateQuestionsByTrack(currentTrack, identity || undefined) 
+    : questions.filter(q => q.part !== 'PART 0');
   const totalSteps = regularQuestions.length + 1; // +1 for identity selection
+  
+  // 调试：输出问题信息
+  console.log('当前身份:', identity, '轨道:', currentTrack, '问题数:', regularQuestions.length);
+  if (currentStep > 0 && currentStep <= regularQuestions.length) {
+    console.log('当前问题:', regularQuestions[currentStep - 1]?.id, regularQuestions[currentStep - 1]?.title);
+  }
 
   const handleNext = () => {
     if (currentStep === 0) {
@@ -104,17 +123,63 @@ export default function Questionnaire() {
     setLocalTexts({ ...localTexts, [questionId]: text });
   };
 
+  // 当身份改变时，更新IdentityContext
+  const handleIdentityChange = (id: Identity) => {
+    setIdentity(id);
+    // IdentityContext会自动从store中获取identity并更新track
+  };
+
+  // 获取当前问题所属的PART
+  const getCurrentPart = () => {
+    if (currentStep === 0) return 'PART 0';
+    const question = regularQuestions[currentStep - 1];
+    return question?.part || '';
+  };
+
+  // 获取所有PART列表
+  const getAllParts = () => {
+    const parts = new Set<string>();
+    parts.add('PART 0');
+    regularQuestions.forEach(q => {
+      if (q.part) parts.add(q.part);
+    });
+    return Array.from(parts).sort();
+  };
+
+  const currentPart = getCurrentPart();
+  const allParts = getAllParts();
+  const currentPartIndex = allParts.indexOf(currentPart);
+
   return (
     <div className="questionnaire-container">
+      {/* 导航栏 */}
+      <div className="questionnaire-navbar">
+        <div className="navbar-left">
+          {allParts.map((part, index) => (
+            <div
+              key={part}
+              className={`nav-part ${part === currentPart ? 'active' : ''} ${index < currentPartIndex ? 'completed' : ''}`}
+            >
+              {part}
+            </div>
+          ))}
+        </div>
+        <div className="navbar-center">
+          <h1 className="navbar-title">🎄 2025年AI技能树评测</h1>
+        </div>
+        <div className="navbar-right">
+          <div className="step-indicator">
+            步骤 {currentStep + 1} / {totalSteps}
+          </div>
+        </div>
+      </div>
+
       <div className="questionnaire-header">
         <div className="progress-bar">
           <div 
             className="progress-fill"
             style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
           />
-        </div>
-        <div className="step-indicator">
-          步骤 {currentStep + 1} / {totalSteps}
         </div>
       </div>
 
@@ -131,7 +196,7 @@ export default function Questionnaire() {
             <IdentitySelection
               identity={identity}
               outputs={outputs}
-              onIdentityChange={setIdentity}
+              onIdentityChange={handleIdentityChange}
               onOutputsChange={setOutputs}
             />
           ) : (
@@ -176,27 +241,30 @@ function IdentitySelection({
   onIdentityChange: (id: Identity) => void;
   onOutputsChange: (outputs: OutputType[]) => void;
 }) {
-  const identities = [
-    { value: '工程架构师', label: '工程架构师 - 构建可靠、可扩展的AI系统' },
-    { value: '算法研究员', label: '算法研究员 - 深入模型机理，追求性能突破' },
-    { value: '产品塑造者', label: '产品塑造者 - 用AI创造卓越用户体验' },
-    { value: '组织催化剂', label: '组织催化剂 - 在组织内驱动AI转型与赋能' },
-    { value: '跨界探索者', label: '跨界探索者 - 探索AI与特定领域的深度融合' },
-  ];
+  // 使用新的10种身份
+  const identities = identityRoles.map(role => ({
+    value: role.name,
+    label: `${role.icon} ${role.name} - ${role.description}`,
+  }));
 
-  const outputTypes: OutputType[] = [
+  // 扩展到9种产出类型
+  const outputTypes: NewOutputType[] = [
     '可运行的系统/产品',
     '被复用的代码/框架',
     '有洞见的论文/方法论',
     '被传播的内容/观点',
     '可量化的业务结果',
+    '提效工具/工作流',
+    '社群运营/用户增长',
+    '投资决策/分析报告',
+    'AI辅助创作内容',
   ];
 
-  const handleOutputToggle = (output: OutputType) => {
-    if (outputs.includes(output)) {
+  const handleOutputToggle = (output: NewOutputType) => {
+    if (outputs.includes(output as OutputType)) {
       onOutputsChange(outputs.filter(o => o !== output));
-    } else if (outputs.length < 2) {
-      onOutputsChange([...outputs, output]);
+    } else if (outputs.length < 3) { // 改为最多3项
+      onOutputsChange([...outputs, output as OutputType]);
     }
   };
 
@@ -224,18 +292,18 @@ function IdentitySelection({
       </div>
 
       <div className="question-section">
-        <h3>Q0.2 你的主要产出形式是？（最多选2项）</h3>
+        <h3>Q0.2 你的主要产出形式是？（最多选3项）</h3>
         <div className="options-list">
           {outputTypes.map((output) => (
             <label 
               key={output} 
-              className={`option-card ${outputs.includes(output) ? 'selected' : ''} ${outputs.length >= 2 && !outputs.includes(output) ? 'disabled' : ''}`}
+              className={`option-card ${outputs.includes(output as OutputType) ? 'selected' : ''} ${outputs.length >= 3 && !outputs.includes(output as OutputType) ? 'disabled' : ''}`}
             >
               <input
                 type="checkbox"
-                checked={outputs.includes(output)}
-                onChange={() => handleOutputToggle(output as OutputType)}
-                disabled={outputs.length >= 2 && !outputs.includes(output)}
+                checked={outputs.includes(output as OutputType)}
+                onChange={() => handleOutputToggle(output)}
+                disabled={outputs.length >= 3 && !outputs.includes(output as OutputType)}
               />
               <span>{output}</span>
             </label>

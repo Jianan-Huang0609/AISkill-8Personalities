@@ -7,10 +7,9 @@
     "dev": "vite",
     "prebuild": "npm install --include=optional --no-save || true",
     "build": "tsc && vite build",
-    "build:ci": "npm install --include=optional --no-save && npm run build",
+    "build:ci": "npm ci && npm install --include=optional --no-save && npm run build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "postinstall": "npm install --include=optional --no-save || true"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "react": "^18.2.0",

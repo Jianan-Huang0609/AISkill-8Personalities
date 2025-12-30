@@ -3,16 +3,25 @@
 export type Identity = 
   | '工程架构师'
   | '算法研究员'
+  | 'AI创业者'
   | '产品塑造者'
+  | '应用层开发者'
+  | 'AI内容创作者'
   | '组织催化剂'
-  | '跨界探索者';
+  | '跨界探索者'
+  | 'AI Self-starter'
+  | 'AI投资人/观察者';
 
 export type OutputType = 
   | '可运行的系统/产品'
   | '被复用的代码/框架'
   | '有洞见的论文/方法论'
   | '被传播的内容/观点'
-  | '可量化的业务结果';
+  | '可量化的业务结果'
+  | '提效工具/工作流'
+  | '社群运营/用户增长'
+  | '投资决策/分析报告'
+  | 'AI辅助创作内容';
 
 export interface Answer {
   questionId: string;
@@ -69,6 +78,18 @@ export interface PersonalityType {
   evolutionPath?: string;  // 人格进化路径
 }
 
+export interface ScoreBreakdown {
+  dimension: string;
+  questionScores: {
+    questionId: string;
+    questionTitle: string;
+    score: number;
+    maxScore: number;
+  }[];
+  averageScore: number;
+  isDefault?: boolean; // 是否为默认分（如AI Self-starter的工程实现力）
+}
+
 export interface AssessmentResult {
   identity: Identity;
   actualType: PersonalityType;
@@ -78,5 +99,6 @@ export interface AssessmentResult {
   bias: '高度匹配' | '基本一致' | '部分偏差' | '差异很大';
   answers?: Answer[]; // 添加答案信息用于导出
   outputs?: OutputType[]; // 添加产出形式用于导出
+  scoreBreakdown?: ScoreBreakdown[]; // 评分明细
 }
 

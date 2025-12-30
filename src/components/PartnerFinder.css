@@ -1,0 +1,331 @@
+.partner-finder {
+  background: var(--snow-white);
+  border-radius: 20px;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  border: 3px solid var(--christmas-gold);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+}
+
+.partner-finder-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.partner-finder-header h2 {
+  font-size: 2.2rem;
+  color: var(--christmas-red);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.partner-finder-header .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+}
+
+/* 当前人格类型 */
+.current-personality {
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.1), rgba(212, 175, 55, 0.1));
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 2px solid var(--christmas-red);
+  text-align: center;
+}
+
+.personality-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: var(--snow-white);
+  border-radius: 25px;
+  border: 3px solid;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.personality-badge.current {
+  border-color: var(--christmas-red);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+.personality-badge.partner {
+  border-color: var(--christmas-green);
+  box-shadow: 0 4px 12px rgba(34, 139, 34, 0.3);
+}
+
+.badge-code {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  font-family: 'Courier New', monospace;
+}
+
+.personality-badge.partner .badge-code {
+  color: var(--christmas-green);
+}
+
+.badge-name {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+
+.current-description {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-top: 1rem;
+}
+
+/* 推荐伙伴 */
+.recommended-partners {
+  margin-bottom: 2rem;
+}
+
+.recommended-partners h3 {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.partners-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.partner-card {
+  background: var(--light-gray);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 2px solid var(--christmas-green);
+  transition: all 0.3s;
+}
+
+.partner-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(34, 139, 34, 0.2);
+}
+
+.partner-card.complementary {
+  border-color: var(--christmas-gold);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(34, 139, 34, 0.1));
+}
+
+.partner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.complementary-badge {
+  background: var(--christmas-gold);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.partner-content {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.partner-how,
+.partner-note {
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.partner-strengths,
+.partner-partners {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(34, 139, 34, 0.2);
+}
+
+.partner-strengths ul,
+.partner-partners ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.partner-strengths li,
+.partner-partners li {
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+/* 快速查找 */
+.quick-search {
+  background: var(--light-gray);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 2px solid var(--christmas-gold);
+}
+
+.quick-search h3 {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.search-hint {
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.partner-code-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--christmas-green);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s;
+}
+
+.partner-code-input:focus {
+  outline: none;
+  border-color: var(--christmas-red);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+}
+
+.search-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--christmas-red), var(--christmas-gold));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(200, 16, 46, 0.4);
+}
+
+.searched-result {
+  margin-top: 2rem;
+}
+
+/* 所有类型快速选择 */
+.all-types-quick {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--christmas-green);
+}
+
+.quick-hint {
+  color: var(--text-gray);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.type-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.type-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--snow-white);
+  border: 2px solid var(--christmas-green);
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.type-button:hover {
+  background: var(--christmas-green);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 139, 34, 0.3);
+}
+
+.type-button.active {
+  background: var(--christmas-red);
+  border-color: var(--christmas-red);
+  color: white;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+/* 互补原理说明 */
+.complementary-explanation {
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.05), rgba(34, 139, 34, 0.05));
+  border-radius: 16px;
+  padding: 2rem;
+  border: 2px solid var(--christmas-gold);
+}
+
+.complementary-explanation h3 {
+  font-size: 1.5rem;
+  color: var(--christmas-red);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.explanation-content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+}
+
+.explanation-content ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.explanation-content li {
+  margin-bottom: 0.75rem;
+}
+
+.tip {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-left: 4px solid var(--christmas-gold);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .partner-finder {
+    padding: 2rem 1.5rem;
+  }
+
+  .partners-list {
+    grid-template-columns: 1fr;
+  }
+
+  .search-input-group {
+    flex-direction: column;
+  }
+
+  .type-buttons {
+    justify-content: center;
+  }
+}
+

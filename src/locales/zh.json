@@ -1,0 +1,125 @@
+{
+  "common": {
+    "start": "开始",
+    "continue": "继续",
+    "submit": "提交",
+    "download": "下载",
+    "share": "分享",
+    "back": "上一步",
+    "next": "下一步",
+    "finish": "完成"
+  },
+  "preview": {
+    "title": "2025年，你和AI的关系是？",
+    "subtitle": "完成这份有深度的问卷，获得：",
+    "duration": "预计时间：{{min}}-{{max}}分钟",
+    "cards": {
+      "personality": {
+        "title": "你的AI人格类型",
+        "desc": "8种精准人格之一"
+      },
+      "tree": {
+        "title": "独一无二的技能圣诞树",
+        "desc": "可360°旋转、可分享炫耀"
+      },
+      "skillTree": {
+        "title": "完整的能力生态地图",
+        "desc": "8维度雷达 + 成长路径"
+      },
+      "report": {
+        "title": "2025年AI成长复盘",
+        "desc": "+ 2026年个性化建议"
+      }
+    },
+    "trust": {
+      "time": "10-20分钟",
+      "timeDesc": "根据你的身份自适应",
+      "security": "数据安全",
+      "securityDesc": "仅用于生成报告",
+      "free": "完全免费",
+      "freeDesc": "无需注册登录"
+    },
+    "cta": {
+      "button": "开始我的2025 AI复盘",
+      "subtext": "↓ 只需先回答3个基础问题"
+    }
+  },
+  "questions": {
+    "Q0.1": {
+      "title": "你的2025年AI主角色是？"
+    },
+    "Q0.2": {
+      "title": "你的主要产出形式是？（最多选3项）"
+    }
+  },
+  "result": {
+    "personalityType": "你的AI人格类型",
+    "dimensionScores": "维度得分",
+    "abstract": "抽象(A)",
+    "concrete": "具体(C)",
+    "breadth": "广度(B)",
+    "depth": "深度(D)",
+    "independent": "独立(I)",
+    "collaborative": "协作(O)",
+    "refinedTrait": "附加特质：精致",
+    "aestheticsScore": "审美得分：",
+    "metaphor": "🎭 形象比喻",
+    "coreTraits": "🧬 核心特质",
+    "superpowers": "🌟 你的超能力",
+    "blindSpots": "⚠️ 潜在盲点",
+    "growthPrescription": "💡 2026成长处方",
+    "complementaryPartners": "🤝 互补伙伴",
+    "yearlyFocus": "📅 年度发展重点",
+    "cognitiveBias": "认知偏差：",
+    "viewDetails": "详细报告",
+    "viewAllTypes": "全部AI技能类型",
+    "downloadCard": "🎴 下载名片",
+    "downloadReport": "📊 下载详细报告",
+    "downloadMD": "📄 下载 MD",
+    "scoreBreakdown": "查看评分明细",
+    "averageScore": "平均分:",
+    "defaultScore": "⚠️ 默认分"
+  },
+  "allTypes": {
+    "title": "🧩 全部AI技能类型",
+    "subtitle": "探索八种AI人格类型，了解你的技能画像",
+    "flipHint": "点击卡片查看猫猫形象 🐱",
+    "flipBack": "点击卡片返回",
+    "metaphor": "形象比喻：",
+    "coreTraits": "核心特质：",
+    "strengths": "优势：",
+    "theoryTitle": "📊 计算权重得分的理论方法",
+    "dimensionCalculation": "一、维度得分计算",
+    "dimensionDesc": "每个维度的得分通过以下步骤计算：",
+    "questionGrouping": "问题分组：将问卷中的问题按8个维度进行分组",
+    "singleScore": "单题得分：根据用户答案，使用每题的评分函数计算得分（0-10分）",
+    "dimensionAverage": "维度平均：计算该维度下所有问题的平均得分",
+    "identityWeight": "身份权重：根据用户选择的身份角色，应用对应的权重矩阵",
+    "formula": "计算公式：",
+    "dimensionScoreFormula": "维度得分 = Σ(单题得分) / 题目数量",
+    "weightedScoreFormula": "加权得分 = 维度得分 × 身份权重",
+    "identityWeights": "二、身份权重矩阵",
+    "identityWeightsDesc": "不同身份角色对各维度的重视程度不同，权重矩阵如下：",
+    "dimension": "维度",
+    "personalityType": "三、人格类型判定",
+    "personalityTypeDesc": "根据三个核心维度的得分，判定用户的人格类型：",
+    "abstractVsConcrete": "抽象(A) vs 具体(C)：",
+    "aScore": "A得分 = 理论洞察力得分",
+    "cScore": "C得分 = 工程实现力得分",
+    "aVsC": "如果 A得分 > C得分，则为抽象(A)，否则为具体(C)",
+    "breadthVsDepth": "广度(B) vs 深度(D)：",
+    "bScore": "B得分 = (信息雷达得分 + 学习敏捷度得分) / 2",
+    "dScore": "D得分 = (理论洞察力得分 + 工程实现力得分) / 2",
+    "bVsD": "如果 B得分 > D得分，则为广度(B)，否则为深度(D)",
+    "independentVsCollaborative": "独立(I) vs 协作(O)：",
+    "iScore": "I得分 = 创新突破力得分",
+    "oScore": "O得分 = (AI协作力得分 + 影响力声量得分) / 2",
+    "iVsO": "如果 I得分 > O得分，则为独立(I)，否则为协作(O)",
+    "finalType": "最终类型代码：",
+    "typeCodeFormula": "类型代码 = (A或C) + (B或D) + (I或O)",
+    "typeCodeExample": "例如：A-B-O 表示抽象-广度-协作型，即\"理论布道者\"",
+    "additionalTrait": "四、附加特质判定",
+    "additionalTraitDesc": "如果表达审美力得分 ≥ 8.0，则获得\"精致\"附加特质，人格类型前会加上\"精致\"前缀。"
+  }
+}
+

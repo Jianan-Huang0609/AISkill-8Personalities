@@ -1,0 +1,125 @@
+{
+  "common": {
+    "start": "Start",
+    "continue": "Continue",
+    "submit": "Submit",
+    "download": "Download",
+    "share": "Share",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish"
+  },
+  "preview": {
+    "title": "What's Your Relationship with AI in 2025?",
+    "subtitle": "Complete this in-depth survey and get:",
+    "duration": "Estimated time: {{min}}-{{max}} minutes",
+    "cards": {
+      "personality": {
+        "title": "Your AI Personality Type",
+        "desc": "One of 8 precise personality types"
+      },
+      "tree": {
+        "title": "Unique Skill Christmas Tree",
+        "desc": "360° rotatable, shareable"
+      },
+      "skillTree": {
+        "title": "Complete Ability Ecosystem Map",
+        "desc": "8-dimension radar + growth path"
+      },
+      "report": {
+        "title": "2025 AI Growth Review",
+        "desc": "+ Personalized 2026 Recommendations"
+      }
+    },
+    "trust": {
+      "time": "10-20 minutes",
+      "timeDesc": "Adaptive based on your identity",
+      "security": "Data Security",
+      "securityDesc": "Only used for report generation",
+      "free": "Completely Free",
+      "freeDesc": "No registration required"
+    },
+    "cta": {
+      "button": "Start My 2025 AI Review",
+      "subtext": "↓ Just answer 3 basic questions first"
+    }
+  },
+  "questions": {
+    "Q0.1": {
+      "title": "What's your main AI role in 2025?"
+    },
+    "Q0.2": {
+      "title": "What are your main output forms? (Select up to 3)"
+    }
+  },
+  "result": {
+    "personalityType": "Your AI Personality Type",
+    "dimensionScores": "Dimension Scores",
+    "abstract": "Abstract (A)",
+    "concrete": "Concrete (C)",
+    "breadth": "Breadth (B)",
+    "depth": "Depth (D)",
+    "independent": "Independent (I)",
+    "collaborative": "Collaborative (O)",
+    "refinedTrait": "Additional Trait: Refined",
+    "aestheticsScore": "Aesthetics Score: ",
+    "metaphor": "🎭 Metaphor",
+    "coreTraits": "🧬 Core Traits",
+    "superpowers": "🌟 Your Superpowers",
+    "blindSpots": "⚠️ Potential Blind Spots",
+    "growthPrescription": "💡 2026 Growth Prescription",
+    "complementaryPartners": "🤝 Complementary Partners",
+    "yearlyFocus": "📅 Annual Development Focus",
+    "cognitiveBias": "Cognitive Bias: ",
+    "viewDetails": "Detailed Report",
+    "viewAllTypes": "All AI Skill Types",
+    "downloadCard": "🎴 Download Card",
+    "downloadReport": "📊 Download Detailed Report",
+    "downloadMD": "📄 Download MD",
+    "scoreBreakdown": "View Score Breakdown",
+    "averageScore": "Average Score:",
+    "defaultScore": "⚠️ Default Score"
+  },
+  "allTypes": {
+    "title": "🧩 All AI Skill Types",
+    "subtitle": "Explore eight AI personality types and understand your skill profile",
+    "flipHint": "Click card to view cat image 🐱",
+    "flipBack": "Click card to return",
+    "metaphor": "Metaphor: ",
+    "coreTraits": "Core Traits: ",
+    "strengths": "Strengths: ",
+    "theoryTitle": "📊 Theoretical Method for Calculating Weighted Scores",
+    "dimensionCalculation": "I. Dimension Score Calculation",
+    "dimensionDesc": "Each dimension's score is calculated through the following steps:",
+    "questionGrouping": "Question Grouping: Group questions in the questionnaire by 8 dimensions",
+    "singleScore": "Single Question Score: Calculate score (0-10) based on user answers using each question's scoring function",
+    "dimensionAverage": "Dimension Average: Calculate the average score of all questions in that dimension",
+    "identityWeight": "Identity Weight: Apply corresponding weight matrix based on user's selected identity role",
+    "formula": "Calculation Formula:",
+    "dimensionScoreFormula": "Dimension Score = Σ(Single Question Score) / Number of Questions",
+    "weightedScoreFormula": "Weighted Score = Dimension Score × Identity Weight",
+    "identityWeights": "II. Identity Weight Matrix",
+    "identityWeightsDesc": "Different identity roles value each dimension differently. The weight matrix is as follows:",
+    "dimension": "Dimension",
+    "personalityType": "III. Personality Type Determination",
+    "personalityTypeDesc": "Based on scores from three core dimensions, determine user's personality type:",
+    "abstractVsConcrete": "Abstract (A) vs Concrete (C):",
+    "aScore": "A Score = Theoretical Insight Score",
+    "cScore": "C Score = Engineering Execution Score",
+    "aVsC": "If A Score > C Score, then Abstract (A), otherwise Concrete (C)",
+    "breadthVsDepth": "Breadth (B) vs Depth (D):",
+    "bScore": "B Score = (Information Radar Score + Learning Agility Score) / 2",
+    "dScore": "D Score = (Theoretical Insight Score + Engineering Execution Score) / 2",
+    "bVsD": "If B Score > D Score, then Breadth (B), otherwise Depth (D)",
+    "independentVsCollaborative": "Independent (I) vs Collaborative (O):",
+    "iScore": "I Score = Innovation Breakthrough Score",
+    "oScore": "O Score = (AI Collaboration Score + Influence Voice Score) / 2",
+    "iVsO": "If I Score > O Score, then Independent (I), otherwise Collaborative (O)",
+    "finalType": "Final Type Code:",
+    "typeCodeFormula": "Type Code = (A or C) + (B or D) + (I or O)",
+    "typeCodeExample": "For example: A-B-O represents Abstract-Breadth-Collaborative type, i.e., \"Theory Evangelist\"",
+    "additionalTrait": "IV. Additional Trait Determination",
+    "additionalTraitDesc": "If Expression Aesthetics Score ≥ 8.0, gain \"Refined\" additional trait, and \"Refined\" prefix will be added before personality type."
+  }
+}
+

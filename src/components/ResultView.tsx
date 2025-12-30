@@ -2,8 +2,11 @@ import { AssessmentResult } from '../types/questionnaire';
 import RadarChart from './RadarChart';
 import PersonalityCard from './PersonalityCard';
 import AllPersonalityTypes from './AllPersonalityTypes';
+import LanguageSwitch from './LanguageSwitch';
+import PartnerFinder from './PartnerFinder';
 import { useState } from 'react';
-import { downloadMarkdown, generatePDFWithCharts, downloadPersonalityCard } from '../utils/exportReport';
+import { downloadMarkdown, downloadPersonalityCard } from '../utils/exportReport';
+import { useLanguage } from '../contexts/LanguageContext';
 import './ResultView.css';
 
 interface ResultViewProps {
@@ -11,28 +14,16 @@ interface ResultViewProps {
 }
 
 export default function ResultView({ result }: ResultViewProps) {
+  const { language, t } = useLanguage();
   const [viewMode, setViewMode] = useState<'report' | 'all-types'>('report');
 
   const handleDownloadMarkdown = () => {
-    downloadMarkdown(result);
+    downloadMarkdown(result, language);
   };
 
-  const handleDownloadPDF = async () => {
-    try {
-      // 确保在报告视图下
-      if (viewMode !== 'report') {
-        setViewMode('report');
-        // 等待视图切换
-        setTimeout(async () => {
-          await generatePDFWithCharts(result);
-        }, 500);
-      } else {
-        await generatePDFWithCharts(result);
-      }
-    } catch (error) {
-      console.error('下载PDF失败:', error);
-      alert('下载PDF失败，请稍后重试');
-    }
+  const handleDownloadReport = () => {
+    // 下载详细报告（Markdown格式，包含所有内容）
+    downloadMarkdown(result, language);
   };
 
   const handleDownloadCard = async () => {
@@ -46,42 +37,45 @@ export default function ResultView({ result }: ResultViewProps) {
 
   return (
     <div className="result-view">
+      <div className="result-header-top">
+        <LanguageSwitch />
+      </div>
       <div className="result-header">
         <div className="view-mode-selector">
           <button
             className={viewMode === 'report' ? 'active' : ''}
             onClick={() => setViewMode('report')}
           >
-            详细报告
+            {t('result.viewDetails')}
           </button>
           <button
             className={viewMode === 'all-types' ? 'active' : ''}
             onClick={() => setViewMode('all-types')}
           >
-            全部AI技能类型
+            {t('result.viewAllTypes')}
           </button>
         </div>
         <div className="download-buttons">
           <button
             className="download-btn download-card"
             onClick={handleDownloadCard}
-            title="下载人格名片（onepage图片）"
+            title={language === 'en' ? 'Download personality card (onepage image)' : '下载人格名片（onepage图片）'}
           >
-            🎴 下载名片
+            {t('result.downloadCard')}
+          </button>
+          <button
+            className="download-btn download-report"
+            onClick={handleDownloadReport}
+            title={language === 'en' ? 'Download detailed report (Markdown format, includes all content)' : '下载详细报告（Markdown格式，包含所有内容）'}
+          >
+            {t('result.downloadReport')}
           </button>
           <button
             className="download-btn download-md"
             onClick={handleDownloadMarkdown}
-            title="下载Markdown格式报告"
+            title={language === 'en' ? 'Download Markdown format report' : '下载Markdown格式报告'}
           >
-            📄 下载 MD
-          </button>
-          <button
-            className="download-btn download-pdf"
-            onClick={handleDownloadPDF}
-            title="下载PDF格式报告"
-          >
-            📑 下载 PDF
+            {t('result.downloadMD')}
           </button>
         </div>
       </div>
@@ -89,31 +83,60 @@ export default function ResultView({ result }: ResultViewProps) {
       {viewMode === 'report' && (
         <div className="result-report">
           <PersonalityCard result={result} />
+          <PartnerFinder result={result} />
           <div className="scores-section">
-            <h2>维度得分</h2>
+            <h2>{t('result.dimensionScores')}</h2>
             <RadarChart scores={result.scores} />
             <div className="dimension-details">
               {Object.entries(result.scores).map(([key, score]) => {
                 const dimensionNames: Record<string, string> = {
-                  theory: '理论洞察力',
-                  engineering: '工程实现力',
-                  learning: '学习敏捷度',
-                  collaboration: 'AI协作力',
-                  radar: '信息雷达',
-                  innovation: '创新突破力',
-                  influence: '影响力声量',
-                  aesthetics: '表达审美力',
+                  theory: language === 'en' ? 'Theoretical Insight' : '理论洞察力',
+                  engineering: language === 'en' ? 'Engineering Execution' : '工程实现力',
+                  learning: language === 'en' ? 'Learning Agility' : '学习敏捷度',
+                  collaboration: language === 'en' ? 'AI Collaboration' : 'AI协作力',
+                  radar: language === 'en' ? 'Information Radar' : '信息雷达',
+                  innovation: language === 'en' ? 'Innovation Breakthrough' : '创新突破力',
+                  influence: language === 'en' ? 'Influence Voice' : '影响力声量',
+                  aesthetics: language === 'en' ? 'Expression Aesthetics' : '表达审美力',
                 };
+                const breakdown = result.scoreBreakdown?.find(b => b.dimension === dimensionNames[key]);
+                const isDefault = breakdown?.isDefault;
+                
                 return (
                   <div key={key} className="dimension-item">
-                    <span className="dimension-name">{dimensionNames[key] || key}</span>
-                    <div className="score-bar">
-                      <div 
-                        className="score-fill" 
-                        style={{ width: `${(score / 10) * 100}%` }}
-                      />
+                    <div className="dimension-header">
+                      <span className="dimension-name">{dimensionNames[key] || key}</span>
+                      {isDefault && (
+                        <span className="default-score-badge" title={language === 'en' ? 'This dimension uses default score (estimated based on other dimensions)' : '该维度使用默认分（基于其他维度估算）'}>
+                          {t('result.defaultScore')}
+                        </span>
+                      )}
                     </div>
-                    <span className="score-value">{score.toFixed(1)}/10</span>
+                    <div className="dimension-score-row">
+                      <div className="score-bar">
+                        <div 
+                          className="score-fill" 
+                          style={{ width: `${(score / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="score-value">{score.toFixed(1)}/10</span>
+                    </div>
+                    {breakdown && breakdown.questionScores.length > 0 && (
+                      <details className="score-breakdown">
+                        <summary className="breakdown-toggle">{t('result.scoreBreakdown')}</summary>
+                        <div className="breakdown-content">
+                          {breakdown.questionScores.map((qs, idx) => (
+                            <div key={idx} className="breakdown-item">
+                              <span className="breakdown-question">{qs.questionTitle}</span>
+                              <span className="breakdown-score">{qs.score.toFixed(1)}/10</span>
+                            </div>
+                          ))}
+                          <div className="breakdown-average">
+                            {t('result.averageScore')} {breakdown.averageScore.toFixed(1)}/10
+                          </div>
+                        </div>
+                      </details>
+                    )}
                   </div>
                 );
               })}
@@ -121,7 +144,7 @@ export default function ResultView({ result }: ResultViewProps) {
           </div>
           {result.badges.length > 0 && (
             <div className="badges-section">
-              <h2>成就徽章</h2>
+              <h2>{language === 'en' ? 'Achievement Badges' : '成就徽章'}</h2>
               <div className="badges-list">
                 {result.badges.map((badge) => (
                   <span key={badge} className="badge">

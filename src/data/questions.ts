@@ -1,58 +1,12 @@
 import { Identity } from '../types/questionnaire';
+import { identityRoles } from '../types/identity';
 
-// 身份权重矩阵
-export const identityWeights: Record<Identity, Record<string, number>> = {
-  '工程架构师': {
-    theory: 0.15,
-    engineering: 0.25,
-    learning: 0.15,
-    collaboration: 0.15,
-    radar: 0.10,
-    innovation: 0.10,
-    influence: 0.05,
-    aesthetics: 0.05,
-  },
-  '算法研究员': {
-    theory: 0.25,
-    engineering: 0.15,
-    learning: 0.15,
-    collaboration: 0.10,
-    radar: 0.15,
-    innovation: 0.15,
-    influence: 0.05,
-    aesthetics: 0.00,
-  },
-  '产品塑造者': {
-    theory: 0.10,
-    engineering: 0.15,
-    learning: 0.15,
-    collaboration: 0.20,
-    radar: 0.10,
-    innovation: 0.15,
-    influence: 0.10,
-    aesthetics: 0.05,
-  },
-  '组织催化剂': {
-    theory: 0.10,
-    engineering: 0.15,
-    learning: 0.15,
-    collaboration: 0.20,
-    radar: 0.15,
-    innovation: 0.10,
-    influence: 0.10,
-    aesthetics: 0.05,
-  },
-  '跨界探索者': {
-    theory: 0.15,
-    engineering: 0.15,
-    learning: 0.20,
-    collaboration: 0.15,
-    radar: 0.15,
-    innovation: 0.10,
-    influence: 0.05,
-    aesthetics: 0.05,
-  },
-};
+// 身份权重矩阵（从 identityRoles 自动生成）
+export const identityWeights: Record<Identity, Record<string, number>> = 
+  identityRoles.reduce((acc, role) => {
+    acc[role.name as Identity] = role.weights;
+    return acc;
+  }, {} as Record<Identity, Record<string, number>>);
 
 // 问题配置
 export interface Question {
@@ -111,21 +65,21 @@ export const questions: Question[] = [
     id: 'Q1.1',
     part: 'PART 1',
     dimension: '理论洞察力',
-    title: '在构建生产级AI系统时，设计决策常面临多路径的取舍。对于以下决策场景，您是否能够基于理论框架或实践经验，做出明确的判断并说明取舍依据？（可多选）',
+    title: '在构建AI系统时，你遇到过以下哪些设计决策场景，并能做出明确判断？（可多选）',
     type: 'multiple',
     options: [
       // 一类：架构与系统设计（2个）
-      { value: 'agent_architecture', label: '智能体架构：当任务复杂度增加时，是采用简单但易瓶颈的单智能体，还是转向高效但协调复杂的多智能体协作？' },
-      { value: 'async_workflow', label: '流程设计：为保证流程可预测，应采用直观但慢速的同步链式调用，还是实施高效但调试复杂的异步事件驱动？' },
+      { value: 'agent_architecture', label: '智能体架构：任务变复杂时，用单个智能体（简单但容易卡住）还是多个智能体协作（高效但协调复杂）？' },
+      { value: 'async_workflow', label: '流程设计：用同步调用（好理解但慢）还是异步事件（快但难调试）？' },
       // 二类：技术选型与数据（2个）
-      { value: 'memory_system', label: '记忆系统：为存储和召回知识，应依赖灵活但可能出错的向量检索，还是采用精确但设计复杂的结构化图数据库？' },
-      { value: 'context_management', label: '上下文管理：为处理长文本信息，应利用方便但低效的超长上下文窗口，还是构建精准但复杂的RAG检索系统？' },
+      { value: 'memory_system', label: '记忆系统：用向量检索存知识（灵活但可能不准）还是图数据库（精确但设计复杂）？' },
+      { value: 'context_management', label: '上下文管理：用超长上下文窗口（方便但效率低）还是RAG检索（精准但复杂）？' },
       // 三类：性能与优化（2个）
-      { value: 'inference_optimization', label: '推理优化：为提升服务体验，应优化至关重要的单次请求延迟，还是追求影响总体的资源吞吐与成本效率？' },
-      { value: 'fine_tuning_strategy', label: '模型定制：为提升模型效果，应持续投入快速试错的提示工程，还是启动效果显著但周期长的专项微调？' },
+      { value: 'inference_optimization', label: '推理优化：优先优化单次请求速度，还是整体吞吐量和成本？' },
+      { value: 'fine_tuning_strategy', label: '模型定制：持续优化提示词（快速试错），还是做模型微调（效果好但周期长）？' },
       // 四类：工程实践与保障（2个）
-      { value: 'evaluation_standard', label: '评估标准：为衡量系统表现，应优化可比性强但脱离业务的传统基准，还是直接提升真实但难量化的端到端任务成功率？' },
-      { value: 'output_guarantee', label: '输出保障：为确保下游稳定，应完全信任并直接使用模型原始输出，还是增加可靠但引入延迟的强校验后处理层？' },
+      { value: 'evaluation_standard', label: '评估标准：用标准测试集（好比较但可能不贴近实际）还是真实业务指标（真实但难量化）？' },
+      { value: 'output_guarantee', label: '输出保障：直接使用模型输出（快但可能不稳定），还是加校验层（可靠但会变慢）？' },
     ],
     scoring: (answer: string[]) => {
       const count = answer.length;

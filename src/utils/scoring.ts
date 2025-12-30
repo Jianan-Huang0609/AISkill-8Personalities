@@ -1,10 +1,13 @@
 import { Answer, DimensionScores, Identity, PersonalityType, AssessmentResult } from '../types/questionnaire';
 import { questions } from '../data/questions';
 import { personalityDetails } from '../data/personalityDetails';
+import { getIdentityRole } from '../types/identity';
+import { generateQuestionsByTrack } from './questionRouter';
 
 // 计算各维度得分
 export function calculateDimensionScores(
-  answers: Answer[]
+  answers: Answer[],
+  identity?: Identity
 ): DimensionScores {
   const scores: DimensionScores = {
     theory: 0,
@@ -17,31 +20,45 @@ export function calculateDimensionScores(
     aesthetics: 0,
   };
 
-  // 按维度分组问题
-  const dimensionQuestions: Record<string, string[]> = {
-    theory: ['Q1.1', 'Q1.2', 'Q1.3', 'Q1.4'],
-    engineering: ['Q2.1', 'Q2.2', 'Q2.3'],
-    learning: ['Q3.1', 'Q3.2', 'Q3.3'],
-    collaboration: ['Q4.1', 'Q4.2', 'Q4.3'],
-    radar: ['Q5.1', 'Q5.2', 'Q5.3'],
-    innovation: ['Q6.1', 'Q6.2', 'Q6.3'],
-    influence: ['Q7.1', 'Q7.2'],
-    aesthetics: ['Q8.1', 'Q8.2'],
+  // 根据身份获取对应轨道的问题集
+  let allQuestions = questions;
+  if (identity) {
+    const role = getIdentityRole(identity);
+    if (role) {
+      allQuestions = generateQuestionsByTrack(role.track);
+    }
+  }
+
+  // 按维度分组问题（支持不同轨道的问题ID）
+  // 理论洞察力维度：可能是 Q1.1, Q1.1-app, Q1.1-explore 等
+  // 工程实现力维度：可能是 Q2.1, Q2.1-app 等（AI Self-starter可能没有）
+  // 其他维度：统一使用 Q3.x, Q4.x 等
+  const dimensionQuestionPatterns: Record<string, RegExp[]> = {
+    theory: [/^Q1\.1/, /^Q1\.2/, /^Q1\.3/, /^Q1\.4/], // 匹配 Q1.1, Q1.1-app, Q1.1-explore 等
+    engineering: [/^Q2\.1/, /^Q2\.2/, /^Q2\.3/], // 匹配 Q2.1, Q2.1-app 等（AI Self-starter可能没有）
+    learning: [/^Q3\.1/, /^Q3\.2/, /^Q3\.3/],
+    collaboration: [/^Q4\.1/, /^Q4\.2/, /^Q4\.3/],
+    radar: [/^Q5\.1/, /^Q5\.2/, /^Q5\.3/],
+    innovation: [/^Q6\.1/, /^Q6\.2/, /^Q6\.3/],
+    influence: [/^Q7\.1/, /^Q7\.2/],
+    aesthetics: [/^Q8\.1/, /^Q8\.2/],
   };
 
   // 计算每个维度的平均分
-  Object.entries(dimensionQuestions).forEach(([dimension, questionIds]) => {
+  Object.entries(dimensionQuestionPatterns).forEach(([dimension, patterns]) => {
     const dimensionScores: number[] = [];
     
-    questionIds.forEach(qId => {
-      const question = questions.find(q => q.id === qId);
-      const answer = answers.find(a => a.questionId === qId);
+    patterns.forEach(pattern => {
+      // 找到匹配该模式的问题（从对应轨道的问题集中查找）
+      const matchingQuestion = allQuestions.find(q => pattern.test(q.id));
+      if (!matchingQuestion) return;
       
-      if (question && answer) {
+      // 找到对应的答案（可能ID不完全匹配，需要匹配模式）
+      const answer = answers.find(a => pattern.test(a.questionId));
+      
+      if (answer) {
         // 根据 scoring 函数的签名调用
-        // 注意：虽然类型定义是 (answer: any) => number，但实际实现可能接受两个参数
-        // 使用类型断言来调用
-        const scoringFn = question.scoring as (answer: any, text?: string) => number;
+        const scoringFn = matchingQuestion.scoring as (answer: any, text?: string) => number;
         const score = scoringFn(answer.value, answer.text);
         if (score > 0) {
           dimensionScores.push(score);
@@ -52,6 +69,14 @@ export function calculateDimensionScores(
     if (dimensionScores.length > 0) {
       scores[dimension as keyof DimensionScores] = 
         dimensionScores.reduce((a, b) => a + b, 0) / dimensionScores.length;
+    } else if (dimension === 'engineering') {
+      // 如果工程实现力维度没有得分（如AI Self-starter），给一个默认分
+      // 基于其他维度估算一个合理的分数
+      const avgOtherScores = (
+        scores.theory + scores.learning + scores.collaboration + 
+        scores.radar + scores.innovation + scores.influence + scores.aesthetics
+      ) / 7;
+      scores.engineering = Math.max(avgOtherScores * 0.6, 3); // 给一个相对较低的默认分
     }
   });
 
@@ -166,14 +191,106 @@ export function generateBadges(answers: Answer[], scores: DimensionScores): stri
   return badges;
 }
 
+// 计算评分明细
+export function calculateScoreBreakdown(
+  answers: Answer[],
+  identity?: Identity
+): ScoreBreakdown[] {
+  const breakdown: ScoreBreakdown[] = [];
+  
+  // 根据身份获取对应轨道的问题集
+  let allQuestions = questions;
+  if (identity) {
+    const role = getIdentityRole(identity);
+    if (role) {
+      allQuestions = generateQuestionsByTrack(role.track);
+    }
+  }
+
+  const dimensionQuestionPatterns: Record<string, RegExp[]> = {
+    theory: [/^Q1\.1/, /^Q1\.2/, /^Q1\.3/, /^Q1\.4/],
+    engineering: [/^Q2\.1/, /^Q2\.2/, /^Q2\.3/],
+    learning: [/^Q3\.1/, /^Q3\.2/, /^Q3\.3/],
+    collaboration: [/^Q4\.1/, /^Q4\.2/, /^Q4\.3/],
+    radar: [/^Q5\.1/, /^Q5\.2/, /^Q5\.3/],
+    innovation: [/^Q6\.1/, /^Q6\.2/, /^Q6\.3/],
+    influence: [/^Q7\.1/, /^Q7\.2/],
+    aesthetics: [/^Q8\.1/, /^Q8\.2/],
+  };
+
+  const dimensionNames: Record<string, string> = {
+    theory: '理论洞察力',
+    engineering: '工程实现力',
+    learning: '学习敏捷度',
+    collaboration: 'AI协作力',
+    radar: '信息雷达',
+    innovation: '创新突破力',
+    influence: '影响力声量',
+    aesthetics: '表达审美力',
+  };
+
+  Object.entries(dimensionQuestionPatterns).forEach(([dimension, patterns]) => {
+    const questionScores: ScoreBreakdown['questionScores'] = [];
+    
+    patterns.forEach(pattern => {
+      const matchingQuestion = allQuestions.find(q => pattern.test(q.id));
+      if (!matchingQuestion) return;
+      
+      const answer = answers.find(a => pattern.test(a.questionId));
+      
+      if (answer) {
+        const scoringFn = matchingQuestion.scoring as (answer: any, text?: string) => number;
+        const score = scoringFn(answer.value, answer.text);
+        if (score > 0) {
+          questionScores.push({
+            questionId: matchingQuestion.id,
+            questionTitle: matchingQuestion.title,
+            score,
+            maxScore: 10,
+          });
+        }
+      }
+    });
+
+    if (questionScores.length > 0) {
+      const averageScore = questionScores.reduce((sum, q) => sum + q.score, 0) / questionScores.length;
+      breakdown.push({
+        dimension: dimensionNames[dimension] || dimension,
+        questionScores,
+        averageScore,
+      });
+    } else if (dimension === 'engineering') {
+      // AI Self-starter的工程实现力使用默认分
+      breakdown.push({
+        dimension: dimensionNames[dimension] || dimension,
+        questionScores: [],
+        averageScore: 0, // 会在calculateResult中设置
+        isDefault: true,
+      });
+    }
+  });
+
+  return breakdown;
+}
+
 // 计算最终结果
 export function calculateResult(
   identity: Identity,
   answers: Answer[]
 ): AssessmentResult {
-  const scores = calculateDimensionScores(answers);
+  // 计算各维度得分（传入identity以获取正确的问题集）
+  const scores = calculateDimensionScores(answers, identity);
   const actualType = calculatePersonalityType(scores);
   const badges = generateBadges(answers, scores);
+  
+  // 计算评分明细
+  const scoreBreakdown = calculateScoreBreakdown(answers, identity);
+  
+  // 如果工程实现力是默认分，更新breakdown中的分数
+  const engineeringBreakdown = scoreBreakdown.find(b => b.dimension === '工程实现力');
+  if (engineeringBreakdown?.isDefault) {
+    engineeringBreakdown.averageScore = scores.engineering;
+  }
 
   // 计算认知偏差
   const q4_1 = answers.find(a => a.questionId === 'Q4.1');
@@ -194,6 +311,7 @@ export function calculateResult(
     highlights,
     bias: bias as AssessmentResult['bias'],
     answers, // 保存答案用于导出
+    scoreBreakdown, // 评分明细
   };
 }
 
