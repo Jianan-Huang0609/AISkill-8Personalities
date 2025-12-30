@@ -1,4 +1,4 @@
-import { Answer, DimensionScores, Identity, PersonalityType, AssessmentResult } from '../types/questionnaire';
+import { Answer, DimensionScores, Identity, PersonalityType, AssessmentResult, ScoreBreakdown } from '../types/questionnaire';
 import { questions } from '../data/questions';
 import { personalityDetails } from '../data/personalityDetails';
 import { getIdentityRole } from '../types/identity';
@@ -253,7 +253,7 @@ export function calculateScoreBreakdown(
     });
 
     if (questionScores.length > 0) {
-      const averageScore = questionScores.reduce((sum, q) => sum + q.score, 0) / questionScores.length;
+      const averageScore = questionScores.reduce((sum: number, q: { score: number }) => sum + q.score, 0) / questionScores.length;
       breakdown.push({
         dimension: dimensionNames[dimension] || dimension,
         questionScores,

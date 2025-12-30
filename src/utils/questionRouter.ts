@@ -3,7 +3,6 @@ import { Question } from '../data/questions';
 import { questions } from '../data/questions';
 import { questionsApplication } from '../data/questions/application';
 import { questionsExploration } from '../data/questions/exploration';
-import { getIdentityRole } from '../types/identity';
 
 // 根据轨道和身份生成问题
 export function generateQuestionsByTrack(track: QuestionTrack, identityName?: string): Question[] {

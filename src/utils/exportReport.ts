@@ -448,8 +448,7 @@ export async function generatePDFReport(result: AssessmentResult) {
       const lines = doc.splitTextToSize(text, pageWidth - 2 * margin);
       lines.forEach((line: string) => {
         checkPage();
-        // 使用UTF-8编码
-        doc.text(line, margin, yPos, { encoding: 'UTF8' });
+        doc.text(line, margin, yPos);
         yPos += lineHeight;
       });
     } catch (error) {

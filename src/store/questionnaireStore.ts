@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { QuestionnaireState, Answer, Identity, OutputType, AssessmentResult } from '../types/questionnaire';
-import { getIdentityRole } from '../types/identity';
 
 interface QuestionnaireStore extends QuestionnaireState {
   setIdentity: (identity: Identity) => void;

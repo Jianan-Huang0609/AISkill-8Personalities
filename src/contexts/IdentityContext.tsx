@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import { IdentityRole, QuestionTrack, getIdentityRole } from '../types/identity';
 import { useQuestionnaireStore } from '../store/questionnaireStore';
 
@@ -15,7 +15,8 @@ export function IdentityProvider({ children }: { children: ReactNode }) {
   const storeIdentity = useQuestionnaireStore(state => state.identity);
   const setStoreIdentity = useQuestionnaireStore(state => state.setIdentity);
   
-  const identity = storeIdentity ? getIdentityRole(storeIdentity) : null;
+  const identityRole = storeIdentity ? getIdentityRole(storeIdentity) : undefined;
+  const identity: IdentityRole | null = identityRole || null;
   const track = identity?.track || null;
   const weights = identity?.weights || null;
 
