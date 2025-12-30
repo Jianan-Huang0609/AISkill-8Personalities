@@ -1,7 +1,7 @@
 # Cloudflare Workers 静态资源部署配置
 # 用于部署 SPA（Single Page Application）
 
-name = "ai-skill-tree-assessment"
+name = "aiskill-8personalities"
 compatibility_date = "2025-12-30"
 
 # 静态资源配置
