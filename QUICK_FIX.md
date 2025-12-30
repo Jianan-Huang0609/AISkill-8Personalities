@@ -1,39 +1,61 @@
 # 🚨 快速修复指南
 
-## 你当前在错误的页面！
+## ⚠️ Cloudflare 界面已更新
 
-从截图看，你正在 **"创建 Worker"** 页面，但我们需要的是 **"创建 Pages"** 项目。
+Cloudflare 现在将 Workers 和 Pages 的创建流程合并到一个页面了。你需要在创建过程中**选择正确的类型**。
 
 ---
 
-## ✅ 立即操作步骤
+## ✅ 正确的操作步骤
 
-### 1. 停止当前操作
-- 点击 **"返回"** 按钮，退出 Worker 创建页面
-- 或者直接关闭这个标签页
+### 1. 点击 "创建应用程序" 按钮
 
-### 2. 找到正确的 Pages 入口
+从你当前的 "Workers 和 Pages" 主页面：
 
-在 Cloudflare Dashboard 中：
+1. 点击右上角的 **"创建应用程序"** (Create Application) 蓝色按钮
+2. 这会打开创建流程
 
-1. 左侧菜单 → **"Workers 和 Pages"**
-2. **在页面顶部，找到两个标签**：
-   - **"Workers"** ← 不要点这个
-   - **"Pages"** ← **点击这个！**
-3. 在 Pages 页面中，点击 **"Create a project"**
+### 2. 在创建流程中选择 Pages
 
-### 3. 识别正确的创建页面
+在创建流程中，**第一步或第二步**会要求你选择类型：
 
-**✅ 正确的 Pages 创建页面应该显示**：
-- 标题：**"创建项目"** 或 **"Create a project"**
-- 有 **"Framework preset"** 下拉菜单（可以选择 Vite）
-- **没有** "部署命令" (Deploy command) 字段
-- URL 包含 `/pages/` 或 `/pages/create`
+**✅ 选择 "Pages"**（不是 Workers）
 
-**❌ 错误的 Worker 创建页面显示**：
-- 标题：**"创建 Worker"** 或 **"Create Worker"**
-- 有 **"部署命令"** 字段，默认值是 `npx wrangler deploy`
-- URL 包含 `/workers-and-pages/create` 或 `/workers/`
+可能显示为：
+- "Pages" 选项
+- "Static site" 选项
+- "Website" 选项
+
+### 3. 关键配置步骤
+
+选择 Pages 后，配置如下：
+
+1. **连接 Git 仓库**：选择 `Jianan-Huang0609/AISkill-8Personalities`
+
+2. **选择框架预设**：选择 **"Vite"**
+   - 这会自动填充构建命令和输出目录
+
+3. **检查配置**：
+   - ✅ Build command: `npm run build`
+   - ✅ Build output directory: `dist`
+   - ✅ **没有 "部署命令" (Deploy command) 字段** ← 这是关键！
+
+4. **如果看到 "部署命令" 字段**：
+   - 说明你可能选择了 Workers 类型
+   - 返回上一步，重新选择 Pages
+
+### 4. 如何识别你选择了正确的类型
+
+**✅ 选择了 Pages（正确）**：
+- 有 "Framework preset" 下拉菜单
+- 可以选择 Vite、Next.js、React 等框架
+- **没有** "部署命令" 字段
+- 构建命令和输出目录会自动填充
+
+**❌ 选择了 Workers（错误）**：
+- 有 "部署命令" 字段
+- 默认值是 `npx wrangler deploy`
+- 没有框架预设选项
 
 ---
 
