@@ -42,6 +42,15 @@
 
 ## ☁️ Cloudflare Pages 部署
 
+### ⚠️ 重要：区分 Workers 和 Pages！
+
+**你当前可能在 Workers 设置页面，但我们需要的是 Pages！**
+
+- **Workers**: 用于服务器端代码，需要 `wrangler deploy`
+- **Pages**: 用于静态网站，自动部署，不需要部署命令
+
+我们的项目是静态网站，应该使用 **Pages**。
+
 ### ⚠️ 重要：不要设置自定义部署命令！
 
 Cloudflare Pages 会自动处理部署，**不需要**自定义部署命令（Deploy command）。
@@ -58,12 +67,22 @@ Cloudflare Pages 会自动处理部署，**不需要**自定义部署命令（De
 
 ### 部署步骤
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 "Pages" → "Create a project"
-3. 选择 "Connect to Git"
-4. 授权并选择仓库
-5. 配置构建设置（见上方）
-6. **确保"Deploy command"字段为空或删除**
-7. 点击 "Save and Deploy"
+2. **重要**: 点击左侧菜单 **"Workers 和 Pages"** → **"Pages"** 标签（不是 Workers！）
+3. 点击 **"Create a project"**
+4. 选择 **"Connect to Git"**
+5. 授权并选择仓库
+6. 配置构建设置（见上方）
+7. **确保"Deploy command"字段为空或删除**
+8. 点击 "Save and Deploy"
+
+### 如何确认你在 Pages 而不是 Workers
+
+- ✅ **Pages**: URL 包含 `/pages/`，左侧菜单显示 "Pages" 项目
+- ❌ **Workers**: URL 包含 `/workers/`，左侧菜单显示 "Workers" 项目
+
+如果你看到的是 Workers 设置页面，请：
+1. 删除当前的 Workers 项目（如果误创建了）
+2. 按照上述步骤创建新的 **Pages** 项目
 
 ### 路由配置
 `public/_redirects` 文件已配置 SPA 路由：
